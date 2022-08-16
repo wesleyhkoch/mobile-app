@@ -15,6 +15,7 @@ import {
 import { COLOURS, Items } from "../database/Database"
 
 import Entypo from "react-native-vector-icons/Entypo"
+import Ionicons from "react-native-vector-icons/Ionicons"
 
 export const ProductInfo = ({ route, navigation }: any) => {
   const { productID } = route.params
@@ -42,6 +43,10 @@ export const ProductInfo = ({ route, navigation }: any) => {
         return
       }
     }
+  }
+
+  const addToCart = (id: number) => {
+    console.log("add to cart")
   }
 
   const renderProduct = ({ item, index }: any) => {
@@ -103,6 +108,7 @@ export const ProductInfo = ({ route, navigation }: any) => {
           >
             <TouchableOpacity>
               <Entypo
+                onPress={() => navigation.goBack()}
                 name='chevron-left'
                 style={{
                   fontSize: 18,
@@ -162,7 +168,190 @@ export const ProductInfo = ({ route, navigation }: any) => {
               : null}
           </View>
         </View>
+        <View
+          style={{
+            paddingHorizontal: 16,
+            marginTop: 6,
+          }}
+        >
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              marginVertical: 14,
+            }}
+          >
+            <Entypo
+              name='shopping-cart'
+              style={{
+                fontSize: 18,
+                color: COLOURS.blue,
+                marginRight: 6,
+              }}
+            />
+            <Text
+              style={{
+                fontSize: 12,
+                color: COLOURS.black,
+              }}
+            >
+              Comprar
+            </Text>
+          </View>
+          <View
+            style={{
+              flexDirection: "row",
+              marginVertical: 4,
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
+            <Text
+              style={{
+                fontSize: 24,
+                fontWeight: "600",
+                letterSpacing: 0.5,
+                marginVertical: 4,
+                color: COLOURS.black,
+                maxWidth: "84%",
+              }}
+            >
+              {product.productName}
+            </Text>
+            <Ionicons
+              name='link-outline'
+              style={{
+                fontSize: 24,
+                color: COLOURS.blue,
+                marginRight: 6,
+                backgroundColor: COLOURS.blue + 10,
+                padding: 8,
+                borderRadius: 100,
+              }}
+            />
+          </View>
+          <Text
+            style={{
+              fontSize: 12,
+              color: COLOURS.black,
+              fontWeight: "400",
+              letterSpacing: 1,
+              opacity: 0.5,
+              lineHeight: 20,
+              maxWidth: "85%",
+              maxHeight: 44,
+              marginBottom: 18,
+            }}
+          >
+            {product.description}
+          </Text>
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
+              marginVertical: 14,
+              borderBottomColor: COLOURS.backgroundLight,
+              borderBottomWidth: 1,
+              paddingBottom: 20,
+            }}
+          >
+            <View
+              style={{
+                flexDirection: "row",
+                width: "80%",
+                alignItems: "center",
+              }}
+            >
+              <View
+                style={{
+                  backgroundColor: COLOURS.backgroundLight,
+                  alignItems: "center",
+                  justifyContent: "center",
+                  padding: 12,
+                  borderRadius: 100,
+                  marginRight: 10,
+                }}
+              >
+                <Entypo
+                  name='location-pin'
+                  style={{
+                    fontSize: 16,
+                    color: COLOURS.blue,
+                  }}
+                />
+              </View>
+              <Text>Avenida Brasil, APT 01</Text>
+            </View>
+            <Entypo
+              name='chevron-right'
+              style={{
+                fontSize: 22,
+                color: COLOURS.backgroundDark,
+              }}
+            />
+          </View>
+          <View
+            style={{
+              paddingHorizontal: 16,
+            }}
+          >
+            <Text
+              style={{
+                fontSize: 18,
+                fontWeight: "500",
+                maxWidth: "85%",
+                color: COLOURS.black,
+                marginBottom: 4,
+              }}
+            >
+              R&#x24; {product.productPrice}.00
+            </Text>
+            <Text>
+              Taxa de envio 1% ~ R&#x24; {product.productPrice / 100} (R&#x24;{" "}
+              {product.productPrice + product.productPrice / 10})
+            </Text>
+          </View>
+        </View>
       </ScrollView>
+      <View
+        style={{
+          position: "absolute",
+          bottom: 10,
+          height: "8%",
+          width: "100%",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <TouchableOpacity
+          onPress={() => {
+            product.isAvailable ? addToCart(product.id) : null
+          }}
+          style={{
+            width: "86%",
+            height: "90%",
+            backgroundColor: COLOURS.blue,
+            borderRadius: 20,
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Text
+            style={{
+              fontSize: 12,
+              fontWeight: "500",
+              letterSpacing: 1,
+              color: COLOURS.white,
+              textTransform: "uppercase",
+            }}
+          >
+            {product.isAvailable
+              ? "Adicionar ao carrinho"
+              : "Não está disponível"}
+          </Text>
+        </TouchableOpacity>
+      </View>
     </View>
   )
 }

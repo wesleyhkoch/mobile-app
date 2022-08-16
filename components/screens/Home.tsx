@@ -163,7 +163,7 @@ export const Home = ({ navigation }: any) => {
             </View>
           )
         ) : null}
-        <Text>&#8377; {data.productPrice}</Text>
+        <Text>R&#x24; {data.productPrice}.00</Text>
       </TouchableOpacity>
     )
   }
