@@ -1,0 +1,90 @@
+export const COLOURS = {
+  white: "#fff",
+  black: "#000",
+  green: "#00AC76",
+  red: "#C04345",
+  blue: "#0043F9",
+  backgroundLight: "#F0F0F3",
+  backgroundMedium: "#B9B9B9",
+  backgroundDark: "#777",
+}
+
+export const Items = [
+  {
+    id: 1,
+    category: "product",
+    productName: "CADEIRA GAMER PICHAU ORION, BRANCA E PRETA",
+    productPrice: 1012.92,
+    description:
+      "A Cadeira Gamer Pichau Orion é perfeita para quem quer ter conforto enquanto faz suas tarefas no computador",
+    isOff: true,
+    offPercentage: 10,
+    productImage: require("../database/images/products/chairwhite01.jpg"),
+    isAvailable: true,
+    productImageList: [
+      require("../database/images/products/chairwhite01.jpg"),
+      require("../database/images/products/chairwhite02.jpg"),
+      require("../database/images/products/chairwhite03.jpg"),
+      require("../database/images/products/chairwhite04.jpg"),
+      require("../database/images/products/chairwhite05.jpg"),
+      require("../database/images/products/chairwhite06.jpg"),
+    ],
+  },
+  {
+    id: 2,
+    category: "product",
+    productName: "CADEIRA GAMER MANCER TYR PURPLE EDITION, PRETA E ROXA",
+    productPrice: 923.76,
+    description:
+      "A Cadeira Gamer Mancer Tyr é perfeita para quem quer ter conforto enquanto faz suas tarefas no computador",
+    isOff: false,
+    offPercentage: 10,
+    productImage: require("../database/images/products/chairpurple01.jpg"),
+    isAvailable: true,
+    productImageList: [
+      require("../database/images/products/chairpurple01.jpg"),
+      require("../database/images/products/chairpurple02.jpg"),
+      require("../database/images/products/chairpurple03.jpg"),
+      require("../database/images/products/chairpurple04.jpg"),
+      require("../database/images/products/chairpurple05.jpg"),
+      require("../database/images/products/chairpurple06.jpg"),
+    ],
+  },
+  {
+    id: 3,
+    category: "accessory",
+    productName: "APOIO DE PE DT3 OFFICE ERGONOMICO VERMELHO",
+    productPrice: 199.9,
+    description:
+      "Um excelente apoio de pe para o seu computador, com design moderno e elegante",
+    isOff: false,
+    offPercentage: 10,
+    productImage: require("../database/images/products/footsupport01.jpg"),
+    isAvailable: true,
+    productImageList: [
+      require("../database/images/products/footsupport01.jpg"),
+      require("../database/images/products/footsupport02.jpg"),
+      require("../database/images/products/footsupport03.jpg"),
+      require("../database/images/products/footsupport04.jpg"),
+      require("../database/images/products/footsupport05.jpg"),
+      require("../database/images/products/footsupport06.jpg"),
+    ],
+  },
+  {
+    id: 4,
+    category: "accessory",
+    productName: "TAPETE PARA CADEIRA GAMER 1200X990MM",
+    productPrice: 299.9,
+    description:
+      "Um excelente tapete para a sua cadeira gamer, com design moderno e elegante",
+    isOff: true,
+    offPercentage: 40,
+    productImage: require("../database/images/products/chaircarpet01.jpg"),
+    isAvailable: false,
+    productImageList: [
+      require("../database/images/products/chaircarpet01.jpg"),
+      require("../database/images/products/chaircarpet02.jpg"),
+      require("../database/images/products/chaircarpet03.jpg"),
+    ],
+  },
+]
