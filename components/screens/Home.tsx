@@ -198,7 +198,7 @@ export const Home = ({ navigation }: any) => {
               }}
             />
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate("MyCart")}>
             <MaterialCommunityIcons
               name='cart'
               style={{
@@ -279,7 +279,7 @@ export const Home = ({ navigation }: any) => {
                   marginLeft: 10,
                 }}
               >
-                41
+                {products.length}
               </Text>
             </View>
             <Text
@@ -341,7 +341,7 @@ export const Home = ({ navigation }: any) => {
                   marginLeft: 10,
                 }}
               >
-                21
+                {accessory.length}
               </Text>
             </View>
             <Text

@@ -10,7 +10,10 @@ import {
   Image,
   Dimensions,
   Animated,
+  ToastAndroid,
 } from "react-native"
+
+import AsyncStorage from "@react-native-async-storage/async-storage"
 
 import { COLOURS, Items } from "../database/Database"
 
@@ -45,8 +48,31 @@ export const ProductInfo = ({ route, navigation }: any) => {
     }
   }
 
-  const addToCart = (id: number) => {
-    console.log("add to cart")
+  const addToCart = async (id: number) => {
+    let itemArray = (await AsyncStorage.getItem("cartItems")) as any
+    itemArray = JSON.parse(itemArray)
+    if (itemArray !== null) {
+      let array = itemArray
+      array.push(id)
+
+      try {
+        await AsyncStorage.setItem("cartItems", JSON.stringify(array))
+        ToastAndroid.show("Item added to cart", ToastAndroid.SHORT)
+        navigation.navigate("Home")
+      } catch (error) {
+        return error
+      }
+    } else {
+      let array = []
+      array.push(id)
+      try {
+        await AsyncStorage.setItem("cartItems", JSON.stringify(array))
+        ToastAndroid.show("Item added to cart", ToastAndroid.SHORT)
+        navigation.navigate("Home")
+      } catch (error) {
+        return error
+      }
+    }
   }
 
   const renderProduct = ({ item, index }: any) => {
