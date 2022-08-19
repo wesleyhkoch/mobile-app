@@ -1,10 +1,9 @@
-import { Text, View } from "react-native"
 import { NavigationContainer } from "@react-navigation/native"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import { RootStackParamList } from "./types"
-import { Home } from "./components/screens/Home"
-import { MyCart } from "./components/screens/MyCart"
-import { ProductInfo } from "./components/screens/ProductInfo"
+import { Home } from "./screens/Home"
+import { MyCart } from "./screens/MyCart"
+import { ProductInfo } from "./screens/ProductInfo"
 
 export default function App() {
   const Stack = createNativeStackNavigator<RootStackParamList>()

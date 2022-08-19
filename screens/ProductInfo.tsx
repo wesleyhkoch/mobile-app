@@ -265,58 +265,12 @@ export const ProductInfo = ({ route, navigation }: any) => {
               opacity: 0.5,
               lineHeight: 20,
               maxWidth: "85%",
-              maxHeight: 44,
+              maxHeight: 100,
               marginBottom: 18,
             }}
           >
             {product.description}
           </Text>
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "space-between",
-              marginVertical: 14,
-              borderBottomColor: COLOURS.backgroundLight,
-              borderBottomWidth: 1,
-              paddingBottom: 20,
-            }}
-          >
-            <View
-              style={{
-                flexDirection: "row",
-                width: "80%",
-                alignItems: "center",
-              }}
-            >
-              <View
-                style={{
-                  backgroundColor: COLOURS.backgroundLight,
-                  alignItems: "center",
-                  justifyContent: "center",
-                  padding: 12,
-                  borderRadius: 100,
-                  marginRight: 10,
-                }}
-              >
-                <Entypo
-                  name='location-pin'
-                  style={{
-                    fontSize: 16,
-                    color: COLOURS.blue,
-                  }}
-                />
-              </View>
-              <Text>Avenida Brasil, APT 01</Text>
-            </View>
-            <Entypo
-              name='chevron-right'
-              style={{
-                fontSize: 22,
-                color: COLOURS.backgroundDark,
-              }}
-            />
-          </View>
           <View
             style={{
               paddingHorizontal: 16,
@@ -331,11 +285,11 @@ export const ProductInfo = ({ route, navigation }: any) => {
                 marginBottom: 4,
               }}
             >
-              R&#x24; {product.productPrice}.00
+              R&#x24; {product.productPrice}.90
             </Text>
             <Text>
-              Taxa de envio 1% ~ R&#x24; {product.productPrice / 100} (R&#x24;{" "}
-              {product.productPrice + product.productPrice / 10})
+              Taxa de separação 1% ~ R&#x24; {product.productPrice / 100}{" "}
+              (R&#x24; {product.productPrice + product.productPrice / 10})
             </Text>
           </View>
         </View>

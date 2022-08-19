@@ -16,6 +16,7 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 export const MyCart = ({ navigation }: any) => {
   const [product, setProduct] = useState<any>()
   const [total, setTotal] = useState<any>(null)
+  const [numberItems, setNumberItems] = useState<number>(0)
 
   useEffect(() => {
     const unsubsribe = navigation.addListener("focus", () => {
@@ -150,7 +151,7 @@ export const MyCart = ({ navigation }: any) => {
                   marginRight: 4,
                 }}
               >
-                R&#x24; {data.productPrice}.00
+                R&#x24; {data.productPrice}.90
               </Text>
               <Text>
                 (~ R&#x24; {data.productPrice + data.productPrice / 20})
@@ -181,6 +182,7 @@ export const MyCart = ({ navigation }: any) => {
                 }}
               >
                 <MaterialCommunityIcons
+                  onPress={() => setNumberItems(numberItems - 1)}
                   name='minus'
                   style={{
                     fontSize: 16,
@@ -188,7 +190,7 @@ export const MyCart = ({ navigation }: any) => {
                   }}
                 />
               </View>
-              <Text>1</Text>
+              <Text>{numberItems}</Text>
               <View
                 style={{
                   borderRadius: 100,
@@ -200,6 +202,7 @@ export const MyCart = ({ navigation }: any) => {
                 }}
               >
                 <MaterialCommunityIcons
+                  onPress={() => setNumberItems(numberItems + 1)}
                   name='plus'
                   style={{
                     fontSize: 16,

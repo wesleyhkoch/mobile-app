@@ -108,62 +108,61 @@ export const Home = ({ navigation }: any) => {
             color: COLOURS.black,
             fontWeight: "600",
             marginBottom: 2,
+            textTransform: "capitalize",
           }}
         >
           {data.productName}
         </Text>
-        {data.category == "accessory" ? (
-          data.isAvailable ? (
-            <View
+        {data.isAvailable ? (
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+            }}
+          >
+            <FontAwesome
+              name='circle'
               style={{
-                flexDirection: "row",
-                alignItems: "center",
+                fontSize: 12,
+                marginRight: 6,
+                color: COLOURS.green,
+              }}
+            />
+            <Text
+              style={{
+                fontSize: 12,
+                color: COLOURS.green,
               }}
             >
-              <FontAwesome
-                name='circle'
-                style={{
-                  fontSize: 12,
-                  marginRight: 6,
-                  color: COLOURS.green,
-                }}
-              />
-              <Text
-                style={{
-                  fontSize: 12,
-                  color: COLOURS.green,
-                }}
-              >
-                Disponível
-              </Text>
-            </View>
-          ) : (
-            <View
+              Disponível
+            </Text>
+          </View>
+        ) : (
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+            }}
+          >
+            <FontAwesome
+              name='circle'
               style={{
-                flexDirection: "row",
-                alignItems: "center",
+                fontSize: 12,
+                marginRight: 6,
+                color: COLOURS.red,
+              }}
+            />
+            <Text
+              style={{
+                fontSize: 12,
+                color: COLOURS.red,
               }}
             >
-              <FontAwesome
-                name='circle'
-                style={{
-                  fontSize: 12,
-                  marginRight: 6,
-                  color: COLOURS.red,
-                }}
-              />
-              <Text
-                style={{
-                  fontSize: 12,
-                  color: COLOURS.red,
-                }}
-              >
-                Indisponível
-              </Text>
-            </View>
-          )
-        ) : null}
-        <Text>R&#x24; {data.productPrice}.00</Text>
+              Indisponível
+            </Text>
+          </View>
+        )}
+        <Text>R&#x24; {data.productPrice}.90</Text>
       </TouchableOpacity>
     )
   }
@@ -262,7 +261,7 @@ export const Home = ({ navigation }: any) => {
             >
               <Text
                 style={{
-                  fontSize: 18,
+                  fontSize: 22,
                   color: COLOURS.black,
                   fontWeight: "500",
                   letterSpacing: 1,
@@ -324,7 +323,7 @@ export const Home = ({ navigation }: any) => {
             >
               <Text
                 style={{
-                  fontSize: 18,
+                  fontSize: 22,
                   color: COLOURS.black,
                   fontWeight: "500",
                   letterSpacing: 1,
