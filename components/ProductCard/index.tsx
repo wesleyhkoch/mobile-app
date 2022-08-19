@@ -1,5 +1,5 @@
 import React from "react"
-import { View, Text } from "react-native"
+import { Text } from "react-native"
 
 import {
   AvailableContainer,
@@ -58,7 +58,7 @@ export const ProductCard = ({ data, navigation }: any) => {
           <AvailableTextRed>Indisponível</AvailableTextRed>
         </AvailableContainer>
       )}
-      <Text>R&#x24; {data.productPrice}.90</Text>
+      <Text>R&#x24; {data.productPrice}.00</Text>
     </Container>
   )
 }

@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react"
 
+import { Button } from "../../components"
+
 import {
   View,
   Text,
@@ -19,6 +21,20 @@ import { COLOURS, Items } from "../../database/Database"
 
 import Entypo from "react-native-vector-icons/Entypo"
 import Ionicons from "react-native-vector-icons/Ionicons"
+import {
+  ButtonBack,
+  Container,
+  ImageContainer,
+  ImagesList,
+  InformationsContainer,
+  InformationsHeader,
+  InformationsTitle,
+  ProductDescription,
+  ProductNameSection,
+  ProductNameTitle,
+  ProductPriceSection,
+  ProductPriceTitle,
+} from "./styles"
 
 export const ProductInfo = ({ route, navigation }: any) => {
   const { productID } = route.params
@@ -98,40 +114,14 @@ export const ProductInfo = ({ route, navigation }: any) => {
   }
 
   return (
-    <View
-      style={{
-        width: "100%",
-        height: "100%",
-        backgroundColor: COLOURS.white,
-        position: "relative",
-      }}
-    >
+    <Container>
       <StatusBar
         barStyle='dark-content'
         backgroundColor={COLOURS.backgroundLight}
       />
       <ScrollView>
-        <View
-          style={{
-            width: "100%",
-            backgroundColor: COLOURS.backgroundLight,
-            borderBottomRightRadius: 20,
-            borderBottomLeftRadius: 20,
-            position: "relative",
-            justifyContent: "center",
-            alignItems: "center",
-            marginBottom: 4,
-          }}
-        >
-          <View
-            style={{
-              width: "100%",
-              flexDirection: "row",
-              justifyContent: "space-between",
-              paddingTop: 16,
-              paddingLeft: 16,
-            }}
-          >
+        <ImageContainer>
+          <ButtonBack>
             <TouchableOpacity>
               <Entypo
                 onPress={() => navigation.goBack()}
@@ -145,7 +135,7 @@ export const ProductInfo = ({ route, navigation }: any) => {
                 }}
               />
             </TouchableOpacity>
-          </View>
+          </ButtonBack>
           <FlatList
             data={product.productImageList || null}
             horizontal
@@ -159,16 +149,7 @@ export const ProductInfo = ({ route, navigation }: any) => {
               { useNativeDriver: false }
             )}
           />
-          <View
-            style={{
-              width: "100%",
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "center",
-              marginBottom: 16,
-              marginTop: 32,
-            }}
-          >
+          <ImagesList>
             {product.productImageList
               ? product.productImageList.map((data: any, index: any) => {
                   let opacity = position.interpolate({
@@ -192,21 +173,10 @@ export const ProductInfo = ({ route, navigation }: any) => {
                   )
                 })
               : null}
-          </View>
-        </View>
-        <View
-          style={{
-            paddingHorizontal: 16,
-            marginTop: 6,
-          }}
-        >
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              marginVertical: 14,
-            }}
-          >
+          </ImagesList>
+        </ImageContainer>
+        <InformationsContainer>
+          <InformationsHeader>
             <Entypo
               name='shopping-cart'
               style={{
@@ -215,35 +185,10 @@ export const ProductInfo = ({ route, navigation }: any) => {
                 marginRight: 6,
               }}
             />
-            <Text
-              style={{
-                fontSize: 12,
-                color: COLOURS.black,
-              }}
-            >
-              Comprar
-            </Text>
-          </View>
-          <View
-            style={{
-              flexDirection: "row",
-              marginVertical: 4,
-              alignItems: "center",
-              justifyContent: "space-between",
-            }}
-          >
-            <Text
-              style={{
-                fontSize: 24,
-                fontWeight: "600",
-                letterSpacing: 0.5,
-                marginVertical: 4,
-                color: COLOURS.black,
-                maxWidth: "84%",
-              }}
-            >
-              {product.productName}
-            </Text>
+            <InformationsTitle>Informações do produto</InformationsTitle>
+          </InformationsHeader>
+          <ProductNameSection>
+            <ProductNameTitle>{product.productName}</ProductNameTitle>
             <Ionicons
               name='link-outline'
               style={{
@@ -255,83 +200,28 @@ export const ProductInfo = ({ route, navigation }: any) => {
                 borderRadius: 100,
               }}
             />
-          </View>
-          <Text
-            style={{
-              fontSize: 12,
-              color: COLOURS.black,
-              fontWeight: "400",
-              letterSpacing: 1,
-              opacity: 0.5,
-              lineHeight: 20,
-              maxWidth: "85%",
-              maxHeight: 100,
-              marginBottom: 18,
-            }}
-          >
-            {product.description}
-          </Text>
-          <View
-            style={{
-              paddingHorizontal: 16,
-            }}
-          >
-            <Text
-              style={{
-                fontSize: 18,
-                fontWeight: "500",
-                maxWidth: "85%",
-                color: COLOURS.black,
-                marginBottom: 4,
-              }}
-            >
-              R&#x24; {product.productPrice}.90
-            </Text>
+          </ProductNameSection>
+          <ProductDescription>{product.description}</ProductDescription>
+          <ProductPriceSection>
+            <ProductPriceTitle>
+              R&#x24; {product.productPrice}.00
+            </ProductPriceTitle>
             <Text>
               Taxa de separação 1% ~ R&#x24; {product.productPrice / 100}{" "}
               (R&#x24; {product.productPrice + product.productPrice / 10})
             </Text>
-          </View>
-        </View>
+          </ProductPriceSection>
+        </InformationsContainer>
       </ScrollView>
-      <View
-        style={{
-          position: "absolute",
-          bottom: 10,
-          height: "8%",
-          width: "100%",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <TouchableOpacity
-          onPress={() => {
-            product.isAvailable ? addToCart(product.id) : null
-          }}
-          style={{
-            width: "86%",
-            height: "90%",
-            backgroundColor: COLOURS.blue,
-            borderRadius: 20,
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <Text
-            style={{
-              fontSize: 12,
-              fontWeight: "500",
-              letterSpacing: 1,
-              color: COLOURS.white,
-              textTransform: "uppercase",
-            }}
-          >
-            {product.isAvailable
-              ? "Adicionar ao carrinho"
-              : "Não está disponível"}
-          </Text>
-        </TouchableOpacity>
-      </View>
-    </View>
+
+      {product.isAvailable ? (
+        <Button
+          title={"Adicionar ao carrinho"}
+          onPress={() => addToCart(product.id)}
+        />
+      ) : (
+        <Button title={"Não está disponível"} onPress={() => null} />
+      )}
+    </Container>
   )
 }

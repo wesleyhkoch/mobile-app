@@ -1,4 +1,7 @@
 import React, { useEffect, useState } from "react"
+
+import { Button } from "../../components"
+
 import {
   View,
   Text,
@@ -15,8 +18,8 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 
 export const MyCart = ({ navigation }: any) => {
   const [product, setProduct] = useState<any>()
-  const [total, setTotal] = useState<any>(null)
-  const [numberItems, setNumberItems] = useState<number>(0)
+  const [total, setTotal] = useState<number>(0)
+  const [numberItems, setNumberItems] = useState<number>(1)
 
   useEffect(() => {
     const unsubsribe = navigation.addListener("focus", () => {
@@ -79,7 +82,9 @@ export const MyCart = ({ navigation }: any) => {
       return error
     }
 
-    ToastAndroid.show("Seus itens chegaram em breve!", ToastAndroid.SHORT)
+    if (total !== 0) {
+      ToastAndroid.show("Seus itens chegaram em breve!", ToastAndroid.SHORT)
+    }
 
     navigation.navigate("Home")
   }
@@ -151,7 +156,7 @@ export const MyCart = ({ navigation }: any) => {
                   marginRight: 4,
                 }}
               >
-                R&#x24; {data.productPrice}.90
+                R&#x24; {data.productPrice}.00
               </Text>
               <Text>
                 (~ R&#x24; {data.productPrice + data.productPrice / 20})
@@ -558,42 +563,10 @@ export const MyCart = ({ navigation }: any) => {
           </View>
         </View>
       </ScrollView>
-      <View
-        style={{
-          position: "absolute",
-          bottom: 10,
-          height: "8%",
-          width: "100%",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <TouchableOpacity
-          onPress={() => {
-            total !== 0 ? checkOut() : null
-          }}
-          style={{
-            width: "86%",
-            height: "90%",
-            backgroundColor: COLOURS.blue,
-            borderRadius: 20,
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <Text
-            style={{
-              fontSize: 12,
-              fontWeight: "500",
-              letterSpacing: 1,
-              color: COLOURS.white,
-              textTransform: "uppercase",
-            }}
-          >
-            Finalizar (R&#x24;{total + total / 10})
-          </Text>
-        </TouchableOpacity>
-      </View>
+      <Button
+        title={`Finalizar - R$ ${total + total / 10}`}
+        onPress={checkOut}
+      />
     </View>
   )
 }
