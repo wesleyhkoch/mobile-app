@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react"
 
-import { Button } from "../../components"
+import { Button, InformationCard } from "../../components"
 
 import {
   View,
@@ -15,6 +15,21 @@ import AsyncStorage from "@react-native-async-storage/async-storage"
 import { COLOURS, Items } from "../../database/Database"
 
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
+import {
+  Container,
+  Header,
+  HeaderText,
+  PriceInformation,
+  TaxSection,
+  TaxTitle,
+  TaxValue,
+  Title,
+  TopicSection,
+  TopicTitle,
+  TotalSection,
+  TotalTitle,
+  TotalValue,
+} from "./styles"
 
 export const MyCart = ({ navigation }: any) => {
   const [product, setProduct] = useState<any>()
@@ -156,7 +171,7 @@ export const MyCart = ({ navigation }: any) => {
                   marginRight: 4,
                 }}
               >
-                R&#x24; {data.productPrice}.00
+                R&#x24; {data.productPrice}.90
               </Text>
               <Text>
                 (~ R&#x24; {data.productPrice + data.productPrice / 20})
@@ -235,25 +250,9 @@ export const MyCart = ({ navigation }: any) => {
   }
 
   return (
-    <View
-      style={{
-        width: "100%",
-        height: "100%",
-        backgroundColor: COLOURS.white,
-        position: "relative",
-      }}
-    >
+    <Container>
       <ScrollView>
-        <View
-          style={{
-            width: "100%",
-            flexDirection: "row",
-            paddingTop: 16,
-            paddingHorizontal: 16,
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-        >
+        <Header>
           <TouchableOpacity onPress={() => navigation.goBack()}>
             <MaterialCommunityIcons
               name='chevron-left'
@@ -266,307 +265,50 @@ export const MyCart = ({ navigation }: any) => {
               }}
             />
           </TouchableOpacity>
-          <Text
-            style={{
-              fontSize: 14,
-              color: COLOURS.black,
-              fontWeight: "400",
-            }}
-          >
-            Detalhes do pedido
-          </Text>
-        </View>
-        <Text
-          style={{
-            fontSize: 20,
-            color: COLOURS.black,
-            fontWeight: "500",
-            letterSpacing: 1,
-            paddingTop: 20,
-            paddingLeft: 16,
-            marginBottom: 10,
-          }}
-        >
-          Meu Carrinho
-        </Text>
+          <HeaderText>Detalhes do pedido</HeaderText>
+        </Header>
+        <Title>Meu Carrinho</Title>
         <View style={{ paddingHorizontal: 16 }}>
           {product ? product.map(renderProducts) : null}
         </View>
         <View>
-          <View
-            style={{
-              paddingHorizontal: 16,
-              marginVertical: 10,
-            }}
-          >
-            <Text
-              style={{
-                fontSize: 16,
-                color: COLOURS.black,
-                fontWeight: "500",
-                letterSpacing: 1,
-                marginBottom: 20,
-              }}
-            >
-              Local de entrega
-            </Text>
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "space-between",
-              }}
-            >
-              <View
-                style={{
-                  flexDirection: "row",
-                  width: "80%",
-                  alignItems: "center",
-                }}
-              >
-                <View
-                  style={{
-                    backgroundColor: COLOURS.backgroundLight,
-                    alignItems: "center",
-                    justifyContent: "center",
-                    padding: 12,
-                    borderRadius: 10,
-                    marginRight: 18,
-                  }}
-                >
-                  <MaterialCommunityIcons
-                    name='truck-delivery-outline'
-                    style={{
-                      fontSize: 18,
-                      color: COLOURS.blue,
-                    }}
-                  />
-                </View>
-                <View>
-                  <Text
-                    style={{
-                      fontSize: 14,
-                      color: COLOURS.black,
-                      fontWeight: "500",
-                    }}
-                  >
-                    Avenida Paulista, 1000
-                  </Text>
-                  <Text
-                    style={{
-                      fontSize: 12,
-                      color: COLOURS.black,
-                      fontWeight: "400",
-                      lineHeight: 20,
-                      opacity: 0.5,
-                    }}
-                  >
-                    São Paulo, Brasil
-                  </Text>
-                </View>
-              </View>
-              <MaterialCommunityIcons
-                name='chevron-right'
-                style={{ fontSize: 22, color: COLOURS.black }}
-              />
-            </View>
-          </View>
-          <View
-            style={{
-              paddingHorizontal: 16,
-              marginVertical: 10,
-            }}
-          >
-            <Text
-              style={{
-                fontSize: 16,
-                color: COLOURS.black,
-                fontWeight: "500",
-                letterSpacing: 1,
-                marginBottom: 20,
-              }}
-            >
-              Método de pagamento
-            </Text>
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "space-between",
-              }}
-            >
-              <View
-                style={{
-                  flexDirection: "row",
-                  width: "80%",
-                  alignItems: "center",
-                }}
-              >
-                <View
-                  style={{
-                    backgroundColor: COLOURS.backgroundLight,
-                    alignItems: "center",
-                    justifyContent: "center",
-                    padding: 12,
-                    borderRadius: 10,
-                    marginRight: 18,
-                  }}
-                >
-                  <Text
-                    style={{
-                      fontSize: 10,
-                      fontWeight: "900",
-                      color: COLOURS.blue,
-                      letterSpacing: 1,
-                    }}
-                  >
-                    VISA
-                  </Text>
-                </View>
-                <View>
-                  <Text
-                    style={{
-                      fontSize: 14,
-                      color: COLOURS.black,
-                      fontWeight: "500",
-                    }}
-                  >
-                    Visa Classic
-                  </Text>
-                  <Text
-                    style={{
-                      fontSize: 12,
-                      color: COLOURS.black,
-                      fontWeight: "400",
-                      lineHeight: 20,
-                      opacity: 0.5,
-                    }}
-                  >
-                    ****-1234
-                  </Text>
-                </View>
-              </View>
-              <MaterialCommunityIcons
-                name='chevron-right'
-                style={{ fontSize: 22, color: COLOURS.black }}
-              />
-            </View>
-          </View>
-          <View
-            style={{
-              paddingHorizontal: 16,
-              marginTop: 40,
-              marginBottom: 80,
-            }}
-          >
-            <Text
-              style={{
-                fontSize: 16,
-                color: COLOURS.black,
-                fontWeight: "500",
-                letterSpacing: 1,
-                marginBottom: 20,
-              }}
-            >
-              Informações do pedido
-            </Text>
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "space-between",
-                marginBottom: 8,
-              }}
-            >
-              <Text
-                style={{
-                  fontSize: 12,
-                  fontWeight: "400",
-                  maxWidth: "80%",
-                  color: COLOURS.black,
-                  opacity: 0.5,
-                }}
-              >
-                Subtotal
-              </Text>
-              <Text
-                style={{
-                  fontSize: 12,
-                  fontWeight: "400",
-                  maxWidth: "80%",
-                  color: COLOURS.black,
-                  opacity: 0.8,
-                }}
-              >
-                R&#x24;{total}.00
-              </Text>
-            </View>
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "space-between",
-                marginBottom: 22,
-              }}
-            >
-              <Text
-                style={{
-                  fontSize: 12,
-                  fontWeight: "400",
-                  maxWidth: "80%",
-                  color: COLOURS.black,
-                  opacity: 0.5,
-                }}
-              >
-                Frete
-              </Text>
-              <Text
-                style={{
-                  fontSize: 12,
-                  fontWeight: "400",
-                  maxWidth: "80%",
-                  color: COLOURS.black,
-                  opacity: 0.8,
-                }}
-              >
-                R&#x24;{total / 10}
-              </Text>
-            </View>
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "space-between",
-              }}
-            >
-              <Text
-                style={{
-                  fontSize: 12,
-                  fontWeight: "400",
-                  maxWidth: "80%",
-                  color: COLOURS.black,
-                  opacity: 0.5,
-                }}
-              >
-                Total
-              </Text>
-              <Text
-                style={{
-                  fontSize: 22,
-                  fontWeight: "500",
-                  color: COLOURS.black,
-                }}
-              >
-                R&#x24;{total + total / 10}
-              </Text>
-            </View>
-          </View>
+          <TopicSection>
+            <TopicTitle>Local de entrega</TopicTitle>
+            <InformationCard
+              title='Casa do karalho'
+              subtitle='298 - APT'
+              iconName='truck-delivery-outline'
+            />
+          </TopicSection>
+          <TopicSection>
+            <TopicTitle>Método de pagamento</TopicTitle>
+            <InformationCard
+              title='VISA GOLD'
+              subtitle='**** 1234'
+              iconText='VISA'
+            />
+          </TopicSection>
+          <PriceInformation>
+            <TopicTitle>Informações do pedido</TopicTitle>
+            <TaxSection>
+              <TaxTitle>Subtotal</TaxTitle>
+              <TaxValue>R&#x24;{total}.00</TaxValue>
+            </TaxSection>
+            <TaxSection>
+              <TaxTitle>Frete</TaxTitle>
+              <TaxValue>R&#x24;{total / 10}</TaxValue>
+            </TaxSection>
+            <TotalSection>
+              <TotalTitle>Total</TotalTitle>
+              <TotalValue>R&#x24;{total + total / 10}</TotalValue>
+            </TotalSection>
+          </PriceInformation>
         </View>
       </ScrollView>
       <Button
         title={`Finalizar - R$ ${total + total / 10}`}
         onPress={checkOut}
       />
-    </View>
+    </Container>
   )
 }
