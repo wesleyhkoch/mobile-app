@@ -275,7 +275,7 @@ export const MyCart = ({ navigation }: any) => {
           <TopicSection>
             <TopicTitle>Local de entrega</TopicTitle>
             <InformationCard
-              title='Casa do karalho'
+              title='Avenida Brasil'
               subtitle='298 - APT'
               iconName='truck-delivery-outline'
             />
