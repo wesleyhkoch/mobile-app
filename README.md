@@ -1,6 +1,6 @@
 # ProjecT Store - Mobile App
 
-This is my first App. Builder to learning, this app doesn't is professional or official to use.
+This is my first App. Developed for the purpose of learning, not professional.
 
 ## ⚒️ Building
 
