@@ -98,7 +98,7 @@ export const MyCart = ({ navigation }: any) => {
     }
 
     if (total !== 0) {
-      ToastAndroid.show("Seus itens chegaram em breve!", ToastAndroid.SHORT)
+      ToastAndroid.show("Seus itens chegarão em breve!", ToastAndroid.SHORT)
     }
 
     navigation.navigate("Home")

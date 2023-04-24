@@ -73,7 +73,7 @@ export const ProductInfo = ({ route, navigation }: any) => {
 
       try {
         await AsyncStorage.setItem("cartItems", JSON.stringify(array))
-        ToastAndroid.show("Item added to cart", ToastAndroid.SHORT)
+        ToastAndroid.show("Item adicionado ao carrinho", ToastAndroid.SHORT)
         navigation.navigate("Home")
       } catch (error) {
         return error
@@ -83,7 +83,7 @@ export const ProductInfo = ({ route, navigation }: any) => {
       array.push(id)
       try {
         await AsyncStorage.setItem("cartItems", JSON.stringify(array))
-        ToastAndroid.show("Item added to cart", ToastAndroid.SHORT)
+        ToastAndroid.show("Item adicionado ao carrinho", ToastAndroid.SHORT)
         navigation.navigate("Home")
       } catch (error) {
         return error
