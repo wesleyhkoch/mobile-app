@@ -2,6 +2,11 @@ import React, { useEffect, useState } from "react"
 
 import { StatusBar, ScrollView, TouchableOpacity } from "react-native"
 
+import Entypo from "react-native-vector-icons/Entypo"
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
+
+import { COLOURS, Items } from "../../database/Database"
+
 import { ProductCard } from "../../components"
 
 import {
@@ -19,10 +24,6 @@ import {
   ProductPreview,
 } from "./styles"
 
-import { COLOURS, Items } from "../../database/Database"
-
-import Entypo from "react-native-vector-icons/Entypo"
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
 
 export const Home = ({ navigation }: any) => {
   const [products, setProducts] = useState<any>([])

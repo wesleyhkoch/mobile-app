@@ -1,20 +1,14 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState } from 'react';
 
-import { Button, InformationCard } from "../../components"
+import { Button, InformationCard } from '../../components';
 
-import {
-  View,
-  Text,
-  ScrollView,
-  TouchableOpacity,
-  Image,
-  ToastAndroid,
-} from "react-native"
+import { View, Text, ScrollView, TouchableOpacity, Image, ToastAndroid } from 'react-native';
 
-import AsyncStorage from "@react-native-async-storage/async-storage"
-import { COLOURS, Items } from "../../database/Database"
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { COLOURS, Items } from '../../database/Database';
 
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+
 import {
   Container,
   Header,
@@ -29,127 +23,138 @@ import {
   TotalSection,
   TotalTitle,
   TotalValue,
-} from "./styles"
+} from './styles';
+
+import { Product } from '../../types/index';
+import { ModalComponent } from '../../components/Modal';
 
 export const MyCart = ({ navigation }: any) => {
-  const [product, setProduct] = useState<any>()
-  const [total, setTotal] = useState<number>(0)
-  const [numberItems, setNumberItems] = useState<number>(1)
+  const [product, setProduct] = useState<any>();
+  const [total, setTotal] = useState<number>(0);
+  const [numberItems, setNumberItems] = useState<number>(1);
+  const [informations, setInformations] = useState({
+    country: '',
+    state: '',
+    city: '',
+    neighborhood: '',
+    address: '',
+    complement: '',
+  });
 
   useEffect(() => {
-    const unsubsribe = navigation.addListener("focus", () => {
-      getDataFromDB()
-    })
+    const unsubsribe = navigation.addListener('focus', () => {
+      getDataFromDB();
+    });
 
-    return unsubsribe
-  }, [navigation])
+    return unsubsribe;
+  }, [navigation]);
 
   const getDataFromDB = async () => {
-    let items = (await AsyncStorage.getItem("cartItems")) as any
-    items = JSON.parse(items)
-    let productData: any = []
+    let items = (await AsyncStorage.getItem('cartItems')) as any;
+    items = JSON.parse(items);
+    let productData: any = [];
     if (items !== null) {
       Items.forEach((data: any) => {
         if (items.includes(data.id)) {
-          productData.push(data)
-          return
+          productData.push(data);
+          return;
         }
-      })
+      });
 
-      setProduct(productData)
-      getTotal(productData)
+      setProduct(productData);
+      getTotal(productData);
     } else {
-      setProduct(false)
-      getTotal(false)
+      setProduct(false);
+      getTotal([]);
     }
-  }
+  };
 
-  const getTotal = (productData: any) => {
-    let total = 0
+  console.log(informations);
+
+  const getTotal = (productData: Product[]) => {
+    let total = 0;
     for (let i = 0; i < productData.length; i++) {
-      let productPrice = productData[i].productPrice
-      total = total + productPrice
+      let productPrice = productData[i].productPrice;
+      total = total + productPrice;
     }
 
-    setTotal(total)
-  }
+    setTotal(total);
+  };
 
   const removeItemFromCart = async (id: number) => {
-    let itemArray = (await AsyncStorage.getItem("cartItems")) as any
-    itemArray = JSON.parse(itemArray)
+    let itemArray = (await AsyncStorage.getItem('cartItems')) as any;
+    itemArray = JSON.parse(itemArray);
     if (itemArray !== null) {
-      let array = itemArray
+      let array = itemArray;
       for (let i = 0; i < array.length; i++) {
         if (array[i] == id) {
-          array.splice(i, 1)
+          array.splice(i, 1);
         }
 
-        await AsyncStorage.setItem("cartItems", JSON.stringify(array))
-        getDataFromDB()
+        await AsyncStorage.setItem('cartItems', JSON.stringify(array));
+        getDataFromDB();
       }
     }
-  }
+  };
 
   const checkOut = async () => {
     try {
-      await AsyncStorage.removeItem("cartItems")
+      await AsyncStorage.removeItem('cartItems');
     } catch (error) {
-      return error
+      return error;
     }
 
     if (total !== 0) {
-      ToastAndroid.show("Seus itens chegarão em breve!", ToastAndroid.SHORT)
+      ToastAndroid.show('Seus itens chegarão em breve!', ToastAndroid.SHORT);
     }
 
-    navigation.navigate("Home")
-  }
+    navigation.navigate('Home');
+  };
 
-  const renderProducts = (data: any, index: number) => {
+  const renderProducts = (data: Product, index: number) => {
     return (
       <TouchableOpacity
         key={index}
         onPress={() => {
-          navigation.navigate("ProductInfo", { productID: data.id })
+          navigation.navigate('ProductInfo', { productID: data.id });
         }}
         style={{
-          width: "100%",
-          height: 100,
+          width: '100%',
+          height: '100%',
           marginVertical: 6,
-          flexDirection: "row",
-          alignItems: "center",
+          flexDirection: 'row',
+          alignItems: 'center',
         }}
       >
         <View
           style={{
-            width: "30%",
-            height: 100,
+            width: '30%',
+            height: '100%',
             padding: 14,
-            justifyContent: "center",
-            alignItems: "center",
+            justifyContent: 'center',
+            alignItems: 'center',
             backgroundColor: COLOURS.backgroundLight,
             borderRadius: 10,
             marginRight: 22,
           }}
         >
           <Image
-            source={data.productImage}
+            source={data.productImage as any}
             style={{
-              width: "100%",
-              height: "100%",
-              resizeMode: "contain",
+              width: '100%',
+              height: '100%',
+              resizeMode: 'contain',
             }}
           />
         </View>
-        <View
-          style={{ flex: 1, height: "100%", justifyContent: "space-around" }}
-        >
+        <View style={{ flex: 1, height: '100%', justifyContent: 'space-around' }}>
           <View>
             <Text
               style={{
                 fontSize: 14,
-                maxWidth: "100%",
+                maxWidth: '100%',
                 color: COLOURS.black,
-                fontWeight: "600",
+                fontWeight: '600',
                 letterSpacing: 1,
               }}
             >
@@ -158,37 +163,35 @@ export const MyCart = ({ navigation }: any) => {
             <View
               style={{
                 marginTop: 4,
-                flexDirection: "row",
-                alignItems: "center",
+                flexDirection: 'row',
+                alignItems: 'center',
                 opacity: 0.6,
               }}
             >
               <Text
                 style={{
                   fontSize: 14,
-                  fontWeight: "400",
-                  maxWidth: "85%",
+                  fontWeight: '400',
+                  maxWidth: '85%',
                   marginRight: 4,
                 }}
               >
                 R&#x24; {data.productPrice}.90
               </Text>
-              <Text>
-                (~ R&#x24; {data.productPrice + data.productPrice / 20})
-              </Text>
+              <Text>(~ R&#x24; {data.productPrice + data.productPrice / 20})</Text>
             </View>
           </View>
           <View
             style={{
-              flexDirection: "row",
-              justifyContent: "space-between",
-              alignItems: "center",
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
             }}
           >
             <View
               style={{
-                flexDirection: "row",
-                alignItems: "center",
+                flexDirection: 'row',
+                alignItems: 'center',
               }}
             >
               <View
@@ -203,7 +206,7 @@ export const MyCart = ({ navigation }: any) => {
               >
                 <MaterialCommunityIcons
                   onPress={() => setNumberItems(numberItems - 1)}
-                  name='minus'
+                  name="minus"
                   style={{
                     fontSize: 16,
                     color: COLOURS.backgroundDark,
@@ -223,7 +226,7 @@ export const MyCart = ({ navigation }: any) => {
               >
                 <MaterialCommunityIcons
                   onPress={() => setNumberItems(numberItems + 1)}
-                  name='plus'
+                  name="plus"
                   style={{
                     fontSize: 16,
                     color: COLOURS.backgroundDark,
@@ -233,7 +236,7 @@ export const MyCart = ({ navigation }: any) => {
             </View>
             <TouchableOpacity onPress={() => removeItemFromCart(data.id)}>
               <MaterialCommunityIcons
-                name='delete-outline'
+                name="delete-outline"
                 style={{
                   fontSize: 16,
                   color: COLOURS.backgroundDark,
@@ -246,8 +249,8 @@ export const MyCart = ({ navigation }: any) => {
           </View>
         </View>
       </TouchableOpacity>
-    )
-  }
+    );
+  };
 
   return (
     <Container>
@@ -255,7 +258,7 @@ export const MyCart = ({ navigation }: any) => {
         <Header>
           <TouchableOpacity onPress={() => navigation.goBack()}>
             <MaterialCommunityIcons
-              name='chevron-left'
+              name="chevron-left"
               style={{
                 fontSize: 18,
                 color: COLOURS.backgroundDark,
@@ -274,19 +277,20 @@ export const MyCart = ({ navigation }: any) => {
         <View>
           <TopicSection>
             <TopicTitle>Local de entrega</TopicTitle>
-            <InformationCard
-              title='Avenida Brasil'
-              subtitle='298 - APT'
-              iconName='truck-delivery-outline'
+            <ModalComponent
+              deliveryInformations={(e) => setInformations(e)}
+              openModalButton={
+                <InformationCard
+                  title={`${informations.country} - ${informations.city}/${informations.state}`}
+                  subtitle={`${informations.neighborhood} - ${informations.address}`}
+                  iconName="truck-delivery-outline"
+                />
+              }
             />
           </TopicSection>
           <TopicSection>
             <TopicTitle>Método de pagamento</TopicTitle>
-            <InformationCard
-              title='VISA GOLD'
-              subtitle='**** 1234'
-              iconText='VISA'
-            />
+            <InformationCard title="VISA GOLD" subtitle="**** 1234" iconText="VISA" />
           </TopicSection>
           <PriceInformation>
             <TopicTitle>Informações do pedido</TopicTitle>
@@ -305,10 +309,7 @@ export const MyCart = ({ navigation }: any) => {
           </PriceInformation>
         </View>
       </ScrollView>
-      <Button
-        title={`Finalizar - R$ ${total + total / 10}`}
-        onPress={checkOut}
-      />
+      <Button title={`Finalizar - R$ ${total + total / 10}`} onPress={checkOut} />
     </Container>
-  )
-}
+  );
+};
