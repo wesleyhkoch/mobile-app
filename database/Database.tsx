@@ -15,6 +15,7 @@ export const Items = [
     id: 1,
     category: 'product',
     productName: 'CADEIRA GAMER PICHAU ORION, BRANCA E PRETA',
+    quantity: 1,
     productPrice: 1099,
     description:
       'A Cadeira Gamer Pichau Orion é perfeita para quem quer ter conforto enquanto faz suas tarefas no computador',
@@ -35,6 +36,7 @@ export const Items = [
     id: 2,
     category: 'product',
     productName: 'CADEIRA GAMER MANCER TYR PURPLE EDITION, PRETA E ROXA',
+    quantity: 1,
     productPrice: 899,
     description:
       'A Cadeira Gamer Mancer Tyr é perfeita para quem quer ter conforto enquanto faz suas tarefas no computador',
@@ -55,6 +57,7 @@ export const Items = [
     id: 3,
     category: 'accessory',
     productName: 'APOIO DE PE DT3 OFFICE ERGONOMICO VERMELHO',
+    quantity: 1,
     productPrice: 199,
     description: 'Um excelente apoio de pe para o seu computador, com design moderno e elegante',
     isOff: false,
@@ -74,6 +77,7 @@ export const Items = [
     id: 4,
     category: 'accessory',
     productName: 'TAPETE PARA CADEIRA GAMER 1200X990MM',
+    quantity: 1,
     productPrice: 299,
     description: 'Um excelente tapete para a sua cadeira gamer, com design moderno e elegante',
     isOff: true,
@@ -90,6 +94,7 @@ export const Items = [
     id: 5,
     category: 'product',
     productName: 'TECLADO MECÂNICO LOGITECH G PRO RGB SWITCH GX BLUE CLICKY',
+    quantity: 1,
     productPrice: 499,
     description:
       'Os profissionais pediram, nós ouvimos. Com um design compacto e switches clicky de nível superior, o G PRO é testado pelos melhores profissionais, garantido por torneios e construído para vencer',
@@ -109,6 +114,7 @@ export const Items = [
     id: 6,
     category: 'product',
     productName: 'TECLADO MECÂNICO LOGITECH G915 TKL RGB SWITCH BROWN WIRELESS',
+    quantity: 1,
     productPrice: 999,
     description:
       'O G915 TKL oferece a mesma combinação vencedora de design sofisticado, tecnologias inovadoras, conjunto de recursos e desempenho que o G915 - agora em um design mais compacto e tenkeyless',
@@ -129,6 +135,7 @@ export const Items = [
     id: 7,
     category: 'accessory',
     productName: 'CONJUNTO DE TECLAS RAZER PBT DOUBLESHOT BRANCO',
+    quantity: 1,
     productPrice: 199,
     description: 'Keycaps extras para o seu teclado, com design moderno e elegante',
     isOff: false,
@@ -146,6 +153,7 @@ export const Items = [
     id: 8,
     category: 'accessory',
     productName: 'Apoio de Pulso HyperX Wrist Rest para Teclado, 457x88mm',
+    quantity: 1,
     productPrice: 99,
     description: 'Apoio de pulso para o seu teclado, com design moderno e elegante',
     isOff: false,
@@ -164,6 +172,7 @@ export const Items = [
     id: 9,
     category: 'product',
     productName: 'MOUSE GAMER LOGITECH G PRO WIRELESS 25000DPI RGB',
+    quantity: 1,
     productPrice: 499,
     description:
       'Projetado por 2 anos com a colaboração direta de mais de 50 profissionais de eSports para trazer a forma, o peso e a sensação perfeitos, o PRO WIRELESS é o mouse feito para quem busca a vitória',
@@ -183,6 +192,7 @@ export const Items = [
     id: 10,
     category: 'product',
     productName: 'MOUSE GAMER MANCER CROW, RGB, 12000DPI',
+    quantity: 1,
     productPrice: 99,
     description:
       'O Mancer Crow é sua nova arma para uma gameplay mais longa e confortável. Ultraleve, com cabo de máxima flexibilidade. O mouse que pesa apenas 75g permite movimentos mais rápidos, sessões mais longas de jogo, minimizando as lesões causadas por movimentos repetitivos',
@@ -203,6 +213,7 @@ export const Items = [
     id: 11,
     category: 'accessory',
     productName: 'MOUSEPAD GAMER CORSAIR MM200 EXTENDED EDITION 930X300X3MM',
+    quantity: 1,
     productPrice: 109,
     description:
       'O MM200 é estável e seguro. Você não pode ter uma superfície de mouse que se movimente no meio de um tiroteio, então nós adicionamos uma base antiderrapante que proporciona amortecimento na medida certa. E ele é feito de borracha natural, por isso não tem um odor químico severo.',
@@ -220,6 +231,7 @@ export const Items = [
     id: 12,
     category: 'accessory',
     productName: 'MOUSEPAD GAMER LOGITECH G640 GRANDE 460X400X3MM',
+    quantity: 1,
     productPrice: 99,
     description:
       'Mousepad com design moderno e elegante. O G640 é o mousepad mais leve e confortável para jogar com o seu computador. O design é feito de borracha natural, por isso não tem um odor químico severo.',
