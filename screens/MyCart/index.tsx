@@ -29,16 +29,15 @@ import { Product } from '../../types/index';
 import { ModalComponent } from '../../components/Modal';
 
 export const MyCart = ({ navigation }: any) => {
-  const [product, setProduct] = useState<any>();
+  const [cart, setCart] = useState<Product[]>([]);
   const [total, setTotal] = useState<number>(0);
-  const [numberItems, setNumberItems] = useState<number>(1);
   const [informations, setInformations] = useState({
-    country: '',
-    state: '',
-    city: '',
-    neighborhood: '',
-    address: '',
-    complement: '',
+    country: 'Brasil',
+    state: 'RS',
+    city: 'Porto Alegre',
+    neighborhood: 'Humaitá',
+    address: 'Av. Padre Leopoldo Brentano',
+    complement: '110 - Portão 2',
   });
 
   useEffect(() => {
@@ -53,6 +52,7 @@ export const MyCart = ({ navigation }: any) => {
     let items = (await AsyncStorage.getItem('cartItems')) as any;
     items = JSON.parse(items);
     let productData: any = [];
+
     if (items !== null) {
       Items.forEach((data: any) => {
         if (items.includes(data.id)) {
@@ -61,24 +61,34 @@ export const MyCart = ({ navigation }: any) => {
         }
       });
 
-      setProduct(productData);
+      setCart(productData);
       getTotal(productData);
     } else {
-      setProduct(false);
+      setCart([]);
       getTotal([]);
     }
   };
 
-  console.log(informations);
-
   const getTotal = (productData: Product[]) => {
     let total = 0;
     for (let i = 0; i < productData.length; i++) {
-      let productPrice = productData[i].productPrice;
+      let productPrice = productData[i].productPrice * productData[i].quantity;
       total = total + productPrice;
     }
 
     setTotal(total);
+  };
+
+  const updateCartItemQuantity = (productData: Product, newQuantity: number) => {
+    const cartIndex = cart.findIndex((product: Product) => product.id === productData.id);
+    const updatedCart = [...cart];
+
+    if (cartIndex !== -1 && newQuantity > 0) {
+      updatedCart[cartIndex] = { ...updatedCart[cartIndex], quantity: newQuantity };
+    }
+
+    setCart(updatedCart);
+    getTotal(updatedCart);
   };
 
   const removeItemFromCart = async (id: number) => {
@@ -120,7 +130,7 @@ export const MyCart = ({ navigation }: any) => {
         }}
         style={{
           width: '100%',
-          height: '100%',
+          height: 100,
           marginVertical: 6,
           flexDirection: 'row',
           alignItems: 'center',
@@ -129,7 +139,7 @@ export const MyCart = ({ navigation }: any) => {
         <View
           style={{
             width: '30%',
-            height: '100%',
+            height: 100,
             padding: 14,
             justifyContent: 'center',
             alignItems: 'center',
@@ -205,7 +215,7 @@ export const MyCart = ({ navigation }: any) => {
                 }}
               >
                 <MaterialCommunityIcons
-                  onPress={() => setNumberItems(numberItems - 1)}
+                  onPress={() => updateCartItemQuantity(data, data.quantity - 1)}
                   name="minus"
                   style={{
                     fontSize: 16,
@@ -213,7 +223,7 @@ export const MyCart = ({ navigation }: any) => {
                   }}
                 />
               </View>
-              <Text>{numberItems}</Text>
+              <Text>{data.quantity}</Text>
               <View
                 style={{
                   borderRadius: 100,
@@ -225,7 +235,7 @@ export const MyCart = ({ navigation }: any) => {
                 }}
               >
                 <MaterialCommunityIcons
-                  onPress={() => setNumberItems(numberItems + 1)}
+                  onPress={() => updateCartItemQuantity(data, data.quantity + 1)}
                   name="plus"
                   style={{
                     fontSize: 16,
@@ -271,14 +281,12 @@ export const MyCart = ({ navigation }: any) => {
           <HeaderText>Detalhes do pedido</HeaderText>
         </Header>
         <Title>Meu Carrinho</Title>
-        <View style={{ paddingHorizontal: 16 }}>
-          {product ? product.map(renderProducts) : null}
-        </View>
+        <View style={{ paddingHorizontal: 16 }}>{cart ? cart.map(renderProducts) : null}</View>
         <View>
           <TopicSection>
             <TopicTitle>Local de entrega</TopicTitle>
             <ModalComponent
-              deliveryInformations={(e) => setInformations(e)}
+              deliveryInformations={setInformations}
               openModalButton={
                 <InformationCard
                   title={`${informations.country} - ${informations.city}/${informations.state}`}

@@ -116,7 +116,7 @@ export const ProductInfo = ({ route, navigation }: any) => {
   return (
     <Container>
       <StatusBar barStyle="dark-content" backgroundColor={COLOURS.backgroundLight} />
-      <ScrollView>
+      <ScrollView contentContainerStyle={{ height: '120%' }}>
         <ImageContainer>
           <ButtonBack>
             <TouchableOpacity>
