@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 
 import { StatusBar, ScrollView, TouchableOpacity } from 'react-native';
 
-import Entypo from 'react-native-vector-icons/Entypo';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import { COLOURS, Items } from '../../database/Database';
@@ -10,23 +9,18 @@ import { COLOURS, Items } from '../../database/Database';
 import { ProductCard } from '../../components';
 
 import {
-  Logo,
   Container,
   Header,
-  LogoTitle,
-  LogoDescription,
   ProductSection,
   ProductSectionHeader,
   ProductSectionTitleHeader,
   ProductSectionTitle,
   ProductSectionTotal,
-  ProductSectionTitleSeeAll,
   ProductPreview,
 } from './styles';
 
-export const Home = ({ navigation }: any) => {
+export const Products = ({ navigation }: any) => {
   const [products, setProducts] = useState<any>([]);
-  const [accessories, setAccessories] = useState<any>([]);
 
   useEffect(() => {
     const unsubsribe = navigation.addListener('focus', () => {
@@ -38,18 +32,14 @@ export const Home = ({ navigation }: any) => {
 
   const getDataFromDB = async () => {
     const productList = [];
-    const accessoryList = [];
 
     for (let i = 0; i < Items.length; i++) {
       if (Items[i].category === 'product') {
         productList.push(Items[i]);
-      } else if (Items[i].category === 'accessory') {
-        accessoryList.push(Items[i]);
       }
     }
 
     setProducts(productList);
-    setAccessories(accessoryList);
   };
 
   return (
@@ -57,15 +47,15 @@ export const Home = ({ navigation }: any) => {
       <StatusBar backgroundColor={COLOURS.white} barStyle="dark-content" />
       <ScrollView showsVerticalScrollIndicator={false}>
         <Header>
-          <TouchableOpacity>
-            <Entypo
-              name="home"
+          <TouchableOpacity onPress={() => navigation.goBack()}>
+            <MaterialCommunityIcons
+              name="chevron-left"
               style={{
                 fontSize: 18,
-                color: COLOURS.backgroundMedium,
+                color: COLOURS.backgroundDark,
                 padding: 12,
-                borderRadius: 10,
                 backgroundColor: COLOURS.backgroundLight,
+                borderRadius: 12,
               }}
             />
           </TouchableOpacity>
@@ -83,38 +73,15 @@ export const Home = ({ navigation }: any) => {
             />
           </TouchableOpacity>
         </Header>
-        <Logo>
-          <LogoTitle>ProjecT Store</LogoTitle>
-          <LogoDescription>A melhor e maior loja de eletronicos da américa!</LogoDescription>
-        </Logo>
         <ProductSection>
           <ProductSectionHeader>
             <ProductSectionTitleHeader>
               <ProductSectionTitle>Produtos</ProductSectionTitle>
               <ProductSectionTotal>{products.length}</ProductSectionTotal>
             </ProductSectionTitleHeader>
-            <ProductSectionTitleSeeAll onPress={() => navigation.navigate('Products')}>
-              Ver todos
-            </ProductSectionTitleSeeAll>
           </ProductSectionHeader>
           <ProductPreview>
             {products.map((data: any) => {
-              return <ProductCard data={data} navigation={navigation} key={data.id} />;
-            })}
-          </ProductPreview>
-        </ProductSection>
-        <ProductSection>
-          <ProductSectionHeader>
-            <ProductSectionTitleHeader>
-              <ProductSectionTitle>Acessórios</ProductSectionTitle>
-              <ProductSectionTotal>{accessories.length}</ProductSectionTotal>
-            </ProductSectionTitleHeader>
-            <ProductSectionTitleSeeAll onPress={() => navigation.navigate('Accessories')}>
-              Ver todos
-            </ProductSectionTitleSeeAll>
-          </ProductSectionHeader>
-          <ProductPreview>
-            {accessories.map((data: any) => {
               return <ProductCard data={data} navigation={navigation} key={data.id} />;
             })}
           </ProductPreview>
