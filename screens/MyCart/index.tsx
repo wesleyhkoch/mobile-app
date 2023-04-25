@@ -1,13 +1,21 @@
 import React, { useEffect, useState } from 'react';
 
-import { Button, InformationCard } from '../../components';
-
-import { View, Text, ScrollView, TouchableOpacity, Image, ToastAndroid } from 'react-native';
+import {
+  View,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+  Image,
+  ToastAndroid,
+  Pressable,
+} from 'react-native';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+
 import { COLOURS, Items } from '../../database/Database';
 
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { Button, InformationCard, ModalComponent } from '../../components';
 
 import {
   Container,
@@ -26,7 +34,6 @@ import {
 } from './styles';
 
 import { Product } from '../../types/index';
-import { ModalComponent } from '../../components/Modal';
 
 export const MyCart = ({ navigation }: any) => {
   const [cart, setCart] = useState<Product[]>([]);
@@ -186,9 +193,9 @@ export const MyCart = ({ navigation }: any) => {
                   marginRight: 4,
                 }}
               >
-                R&#x24; {data.productPrice}.90
+                R&#x24; {data.productPrice.toFixed(2)}
               </Text>
-              <Text>(~ R&#x24; {data.productPrice + data.productPrice / 20})</Text>
+              <Text>(~ R&#x24; {(data.productPrice + data.productPrice / 20).toFixed(2)})</Text>
             </View>
           </View>
           <View
@@ -298,26 +305,28 @@ export const MyCart = ({ navigation }: any) => {
           </TopicSection>
           <TopicSection>
             <TopicTitle>Método de pagamento</TopicTitle>
-            <InformationCard title="VISA GOLD" subtitle="**** 1234" iconText="VISA" />
+            <Pressable onPress={() => console.log('a')}>
+              <InformationCard title="VISA GOLD" subtitle="**** 1234" iconText="VISA" />
+            </Pressable>
           </TopicSection>
           <PriceInformation>
             <TopicTitle>Informações do pedido</TopicTitle>
             <TaxSection>
               <TaxTitle>Subtotal</TaxTitle>
-              <TaxValue>R&#x24;{total}.00</TaxValue>
+              <TaxValue>R&#x24;{total.toFixed(2)}</TaxValue>
             </TaxSection>
             <TaxSection>
               <TaxTitle>Frete</TaxTitle>
-              <TaxValue>R&#x24;{total / 10}</TaxValue>
+              <TaxValue>R&#x24;{(total / 10).toFixed(2)}</TaxValue>
             </TaxSection>
             <TotalSection>
               <TotalTitle>Total</TotalTitle>
-              <TotalValue>R&#x24;{total + total / 10}</TotalValue>
+              <TotalValue>R&#x24;{(total + total / 10).toFixed(2)}</TotalValue>
             </TotalSection>
           </PriceInformation>
         </View>
       </ScrollView>
-      <Button title={`Finalizar - R$ ${total + total / 10}`} onPress={checkOut} />
+      <Button title={`Finalizar - R$ ${(total + total / 10).toFixed(2)}`} onPress={checkOut} />
     </Container>
   );
 };
