@@ -8,10 +8,13 @@ import {
   Image,
   ToastAndroid,
   Pressable,
+  Alert,
 } from 'react-native';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+
+import { useStripe } from '@stripe/stripe-react-native';
 
 import { COLOURS, Items } from '../../database/Database';
 
@@ -36,6 +39,8 @@ import {
 import { Product } from '../../types/index';
 
 export const MyCart = ({ navigation }: any) => {
+  const { initPaymentSheet, presentPaymentSheet } = useStripe();
+
   const [cart, setCart] = useState<Product[]>([]);
   const [total, setTotal] = useState<number>(0);
   const [informations, setInformations] = useState({
@@ -46,14 +51,6 @@ export const MyCart = ({ navigation }: any) => {
     address: 'Av. Padre Leopoldo Brentano',
     complement: '110 - Portão 2',
   });
-
-  useEffect(() => {
-    const unsubsribe = navigation.addListener('focus', () => {
-      getDataFromDB();
-    });
-
-    return unsubsribe;
-  }, [navigation]);
 
   const getDataFromDB = async () => {
     let items = (await AsyncStorage.getItem('cartItems')) as any;
@@ -128,146 +125,61 @@ export const MyCart = ({ navigation }: any) => {
     navigation.navigate('Home');
   };
 
-  const renderProducts = (data: Product, index: number) => {
-    return (
-      <TouchableOpacity
-        key={index}
-        onPress={() => {
-          navigation.navigate('ProductInfo', { productID: data.id });
-        }}
-        style={{
-          width: '100%',
-          height: 100,
-          marginVertical: 6,
-          flexDirection: 'row',
-          alignItems: 'center',
-        }}
-      >
-        <View
-          style={{
-            width: '30%',
-            height: 100,
-            padding: 14,
-            justifyContent: 'center',
-            alignItems: 'center',
-            backgroundColor: COLOURS.backgroundLight,
-            borderRadius: 10,
-            marginRight: 22,
-          }}
-        >
-          <Image
-            source={data.productImage as any}
-            style={{
-              width: '100%',
-              height: '100%',
-              resizeMode: 'contain',
-            }}
-          />
-        </View>
-        <View style={{ flex: 1, height: '100%', justifyContent: 'space-around' }}>
-          <View>
-            <Text
-              style={{
-                fontSize: 14,
-                maxWidth: '100%',
-                color: COLOURS.black,
-                fontWeight: '600',
-                letterSpacing: 1,
-              }}
-            >
-              {data.productName}
-            </Text>
-            <View
-              style={{
-                marginTop: 4,
-                flexDirection: 'row',
-                alignItems: 'center',
-                opacity: 0.6,
-              }}
-            >
-              <Text
-                style={{
-                  fontSize: 14,
-                  fontWeight: '400',
-                  maxWidth: '85%',
-                  marginRight: 4,
-                }}
-              >
-                R&#x24; {data.productPrice.toFixed(2)}
-              </Text>
-              <Text>(~ R&#x24; {(data.productPrice + data.productPrice / 20).toFixed(2)})</Text>
-            </View>
-          </View>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-            }}
-          >
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-              }}
-            >
-              <View
-                style={{
-                  borderRadius: 100,
-                  marginRight: 20,
-                  padding: 4,
-                  borderWidth: 1,
-                  borderColor: COLOURS.backgroundMedium,
-                  opacity: 0.5,
-                }}
-              >
-                <MaterialCommunityIcons
-                  onPress={() => updateCartItemQuantity(data, data.quantity - 1)}
-                  name="minus"
-                  style={{
-                    fontSize: 16,
-                    color: COLOURS.backgroundDark,
-                  }}
-                />
-              </View>
-              <Text>{data.quantity}</Text>
-              <View
-                style={{
-                  borderRadius: 100,
-                  marginLeft: 20,
-                  padding: 4,
-                  borderWidth: 1,
-                  borderColor: COLOURS.backgroundMedium,
-                  opacity: 0.5,
-                }}
-              >
-                <MaterialCommunityIcons
-                  onPress={() => updateCartItemQuantity(data, data.quantity + 1)}
-                  name="plus"
-                  style={{
-                    fontSize: 16,
-                    color: COLOURS.backgroundDark,
-                  }}
-                />
-              </View>
-            </View>
-            <TouchableOpacity onPress={() => removeItemFromCart(data.id)}>
-              <MaterialCommunityIcons
-                name="delete-outline"
-                style={{
-                  fontSize: 16,
-                  color: COLOURS.backgroundDark,
-                  backgroundColor: COLOURS.backgroundLight,
-                  padding: 8,
-                  borderRadius: 100,
-                }}
-              />
-            </TouchableOpacity>
-          </View>
-        </View>
-      </TouchableOpacity>
-    );
+  const fetchPaymentSheetParams = async () => {
+    const response = await fetch(`http://10.0.0.164:4242/payment-sheet`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    const { paymentIntent, ephemeralKey, customer } = await response.json();
+
+    return {
+      paymentIntent,
+      ephemeralKey,
+      customer,
+    };
   };
+
+  const initializePaymentSheet = async () => {
+    const { paymentIntent, ephemeralKey, customer } = await fetchPaymentSheetParams();
+
+    await initPaymentSheet({
+      merchantDisplayName: 'ProjecT Store',
+      customerId: customer,
+      customerEphemeralKeySecret: ephemeralKey,
+      paymentIntentClientSecret: paymentIntent,
+      allowsDelayedPaymentMethods: true,
+      defaultBillingDetails: {
+        name: 'ProjecT Store Client',
+      },
+    });
+  };
+
+  const openPaymentSheet = async () => {
+    await initializePaymentSheet();
+
+    const { error } = await presentPaymentSheet();
+
+    if (error) {
+      Alert.alert(`Error code: ${error.code}`, error.message);
+    } else {
+      Alert.alert('Success', 'Your order is confirmed!');
+    }
+  };
+
+  useEffect(() => {
+    initializePaymentSheet();
+  }, []);
+
+  useEffect(() => {
+    const unsubsribe = navigation.addListener('focus', () => {
+      getDataFromDB();
+    });
+
+    return unsubsribe;
+  }, [navigation]);
 
   return (
     <Container>
@@ -288,7 +200,150 @@ export const MyCart = ({ navigation }: any) => {
           <HeaderText>Detalhes do pedido</HeaderText>
         </Header>
         <Title>Meu Carrinho</Title>
-        <View style={{ paddingHorizontal: 16 }}>{cart ? cart.map(renderProducts) : null}</View>
+        <View style={{ paddingHorizontal: 16 }}>
+          {cart
+            ? cart.map((data, index) => (
+                <TouchableOpacity
+                  key={index}
+                  onPress={() => {
+                    navigation.navigate('ProductInfo', { productID: data.id });
+                  }}
+                  style={{
+                    width: '100%',
+                    height: 100,
+                    marginVertical: 6,
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                  }}
+                >
+                  <View
+                    style={{
+                      width: '30%',
+                      height: 100,
+                      padding: 14,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      backgroundColor: COLOURS.backgroundLight,
+                      borderRadius: 10,
+                      marginRight: 22,
+                    }}
+                  >
+                    <Image
+                      source={data.productImage as any}
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        resizeMode: 'contain',
+                      }}
+                    />
+                  </View>
+                  <View style={{ flex: 1, height: '100%', justifyContent: 'space-around' }}>
+                    <View>
+                      <Text
+                        style={{
+                          fontSize: 14,
+                          maxWidth: '100%',
+                          color: COLOURS.black,
+                          fontWeight: '600',
+                          letterSpacing: 1,
+                        }}
+                      >
+                        {data.productName}
+                      </Text>
+                      <View
+                        style={{
+                          marginTop: 4,
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                          opacity: 0.6,
+                        }}
+                      >
+                        <Text
+                          style={{
+                            fontSize: 14,
+                            fontWeight: '400',
+                            maxWidth: '85%',
+                            marginRight: 4,
+                          }}
+                        >
+                          R&#x24; {data.productPrice.toFixed(2)}
+                        </Text>
+                        <Text>
+                          (~ R&#x24; {(data.productPrice + data.productPrice / 20).toFixed(2)})
+                        </Text>
+                      </View>
+                    </View>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                      }}
+                    >
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                        }}
+                      >
+                        <View
+                          style={{
+                            borderRadius: 100,
+                            marginRight: 20,
+                            padding: 4,
+                            borderWidth: 1,
+                            borderColor: COLOURS.backgroundMedium,
+                            opacity: 0.5,
+                          }}
+                        >
+                          <MaterialCommunityIcons
+                            onPress={() => updateCartItemQuantity(data, data.quantity - 1)}
+                            name="minus"
+                            style={{
+                              fontSize: 16,
+                              color: COLOURS.backgroundDark,
+                            }}
+                          />
+                        </View>
+                        <Text>{data.quantity}</Text>
+                        <View
+                          style={{
+                            borderRadius: 100,
+                            marginLeft: 20,
+                            padding: 4,
+                            borderWidth: 1,
+                            borderColor: COLOURS.backgroundMedium,
+                            opacity: 0.5,
+                          }}
+                        >
+                          <MaterialCommunityIcons
+                            onPress={() => updateCartItemQuantity(data, data.quantity + 1)}
+                            name="plus"
+                            style={{
+                              fontSize: 16,
+                              color: COLOURS.backgroundDark,
+                            }}
+                          />
+                        </View>
+                      </View>
+                      <TouchableOpacity onPress={() => removeItemFromCart(data.id)}>
+                        <MaterialCommunityIcons
+                          name="delete-outline"
+                          style={{
+                            fontSize: 16,
+                            color: COLOURS.backgroundDark,
+                            backgroundColor: COLOURS.backgroundLight,
+                            padding: 8,
+                            borderRadius: 100,
+                          }}
+                        />
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                </TouchableOpacity>
+              ))
+            : null}
+        </View>
         <View>
           <TopicSection>
             <TopicTitle>Local de entrega</TopicTitle>
@@ -305,7 +360,7 @@ export const MyCart = ({ navigation }: any) => {
           </TopicSection>
           <TopicSection>
             <TopicTitle>Método de pagamento</TopicTitle>
-            <Pressable onPress={() => console.log('a')}>
+            <Pressable onPress={openPaymentSheet}>
               <InformationCard title="VISA GOLD" subtitle="**** 1234" iconText="VISA" />
             </Pressable>
           </TopicSection>

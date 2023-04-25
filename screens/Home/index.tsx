@@ -61,7 +61,7 @@ export const Home = ({ navigation }: any) => {
         <Header>
           <TouchableOpacity>
             <Entypo
-              name="home"
+              name="shopping-bag"
               style={{
                 fontSize: 18,
                 color: COLOURS.backgroundMedium,
