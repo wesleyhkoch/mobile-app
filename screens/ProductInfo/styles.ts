@@ -81,7 +81,7 @@ export const ProductDescription = styled.Text`
 `;
 
 export const ProductPriceSection = styled.View`
-  padding: 0 16px;
+  padding: 0 16px 80px;
 `;
 
 export const ProductPriceTitle = styled.Text`

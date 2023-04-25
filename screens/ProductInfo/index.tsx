@@ -116,7 +116,7 @@ export const ProductInfo = ({ route, navigation }: any) => {
   return (
     <Container>
       <StatusBar barStyle="dark-content" backgroundColor={COLOURS.backgroundLight} />
-      <ScrollView contentContainerStyle={{ height: '120%' }}>
+      <ScrollView>
         <ImageContainer>
           <ButtonBack>
             <TouchableOpacity>
@@ -199,7 +199,7 @@ export const ProductInfo = ({ route, navigation }: any) => {
           </ProductNameSection>
           <ProductDescription>{product.description}</ProductDescription>
           <ProductPriceSection>
-            <ProductPriceTitle>R&#x24; {product.productPrice.toFixed(2)}</ProductPriceTitle>
+            <ProductPriceTitle>R&#x24; {product.productPrice?.toFixed(2)}</ProductPriceTitle>
             <Text>
               Taxa de separação 1% ~ R&#x24; {(product.productPrice / 100).toFixed(2)} (R&#x24;
               {(product.productPrice + product.productPrice / 10).toFixed(2)})
