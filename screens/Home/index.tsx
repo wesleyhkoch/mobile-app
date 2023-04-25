@@ -24,9 +24,11 @@ import {
   ProductPreview,
 } from './styles';
 
+import { Product } from '../../types/index';
+
 export const Home = ({ navigation }: any) => {
-  const [products, setProducts] = useState<any>([]);
-  const [accessories, setAccessories] = useState<any>([]);
+  const [products, setProducts] = useState<Product[]>([]);
+  const [accessories, setAccessories] = useState<Product[]>([]);
 
   useEffect(() => {
     const unsubsribe = navigation.addListener('focus', () => {
@@ -37,8 +39,8 @@ export const Home = ({ navigation }: any) => {
   }, [navigation]);
 
   const getDataFromDB = async () => {
-    const productList = [];
-    const accessoryList = [];
+    const productList: any[] = [];
+    const accessoryList: any[] = [];
 
     for (let i = 0; i < Items.length; i++) {
       if (Items[i].category === 'product') {
@@ -84,6 +86,16 @@ export const Home = ({ navigation }: any) => {
           </TouchableOpacity>
         </Header>
         <Logo>
+          <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+            <Entypo
+              name="paper-plane"
+              style={{
+                fontSize: 30,
+                padding: 12,
+                borderRadius: 10,
+              }}
+            />
+          </TouchableOpacity>
           <LogoTitle>ProjecT Store</LogoTitle>
           <LogoDescription>A melhor e maior loja de eletronicos da américa!</LogoDescription>
         </Logo>
