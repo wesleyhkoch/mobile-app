@@ -1,15 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import {
-  View,
-  Text,
-  ScrollView,
-  TouchableOpacity,
-  Image,
-  ToastAndroid,
-  Pressable,
-  Alert,
-} from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, Image, ToastAndroid, Alert } from 'react-native';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -129,8 +120,12 @@ export const MyCart = ({ navigation }: any) => {
     const response = await fetch(`http://10.0.0.164:4242/payment-sheet`, {
       method: 'POST',
       headers: {
+        Accept: 'application/json',
         'Content-Type': 'application/json',
       },
+      body: JSON.stringify({
+        price: Number((total + total / 10).toFixed(2).toString().split('.').join('')),
+      }),
     });
 
     const { paymentIntent, ephemeralKey, customer } = await response.json();
@@ -152,7 +147,12 @@ export const MyCart = ({ navigation }: any) => {
       paymentIntentClientSecret: paymentIntent,
       allowsDelayedPaymentMethods: true,
       defaultBillingDetails: {
-        name: 'ProjecT Store Client',
+        name: 'ProjecT Store Customer',
+      },
+      appearance: {
+        colors: {
+          primary: COLOURS.blue,
+        },
       },
     });
   };
@@ -165,7 +165,7 @@ export const MyCart = ({ navigation }: any) => {
     if (error) {
       Alert.alert(`Error code: ${error.code}`, error.message);
     } else {
-      Alert.alert('Success', 'Your order is confirmed!');
+      checkOut();
     }
   };
 
@@ -360,9 +360,7 @@ export const MyCart = ({ navigation }: any) => {
           </TopicSection>
           <TopicSection>
             <TopicTitle>Método de pagamento</TopicTitle>
-            <Pressable onPress={openPaymentSheet}>
-              <InformationCard title="VISA GOLD" subtitle="**** 1234" iconText="VISA" />
-            </Pressable>
+            <InformationCard title="VISA GOLD" subtitle="**** 1234" iconText="VISA" />
           </TopicSection>
           <PriceInformation>
             <TopicTitle>Informações do pedido</TopicTitle>
@@ -381,7 +379,10 @@ export const MyCart = ({ navigation }: any) => {
           </PriceInformation>
         </View>
       </ScrollView>
-      <Button title={`Finalizar - R$ ${(total + total / 10).toFixed(2)}`} onPress={checkOut} />
+      <Button
+        title={`Finalizar - R$ ${(total + total / 10).toFixed(2)}`}
+        onPress={openPaymentSheet}
+      />
     </Container>
   );
 };
