@@ -8,7 +8,7 @@ export const COLOURS = {
   backgroundMedium: '#B9B9B9',
   backgroundDark: '#777',
   backgroundLayer: '#00000040',
-};
+}
 
 export const Items = [
   {
@@ -244,4 +244,4 @@ export const Items = [
       require('../assets/accessories/mouses/logitech02.png'),
     ],
   },
-];
+]

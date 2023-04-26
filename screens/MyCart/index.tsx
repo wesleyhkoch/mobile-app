@@ -1,15 +1,23 @@
 import React, { useEffect, useState } from 'react'
 
-import { View, Text, ScrollView, TouchableOpacity, Image, ToastAndroid, Alert } from 'react-native'
+import {
+  View,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+  Image,
+  ToastAndroid,
+  Touchable,
+} from 'react-native'
 
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 
-import { useStripe } from '@stripe/stripe-react-native'
+import { AddressDetails, AddressSheet, useStripe } from '@stripe/stripe-react-native'
 
 import { COLOURS, Items } from '../../database/Database'
 
-import { Button, InformationCard, ModalComponent } from '../../components'
+import { Button, InformationCard } from '../../components'
 
 import {
   Container,
@@ -30,18 +38,13 @@ import {
 import { Product } from '../../types/index'
 
 export const MyCart = ({ navigation }: any) => {
-  const { initPaymentSheet, presentPaymentSheet } = useStripe()
+  const { initPaymentSheet, presentPaymentSheet, confirmPaymentSheetPayment } = useStripe()
 
   const [cart, setCart] = useState<Product[]>([])
   const [total, setTotal] = useState<number>(0)
-  const [informations, setInformations] = useState({
-    country: 'Brasil',
-    state: 'RS',
-    city: 'Porto Alegre',
-    neighborhood: 'Humaitá',
-    address: 'Av. Padre Leopoldo Brentano',
-    complement: '110 - Portão 2',
-  })
+  const [openAdressModal, setOpenAdressModal] = useState<boolean>(false)
+  const [paymentMethod, setPaymentMethod] = useState<any>()
+  const [informations, setInformations] = useState<AddressDetails>()
 
   const getDataFromDB = async () => {
     let items = (await AsyncStorage.getItem('cartItems')) as any
@@ -117,7 +120,6 @@ export const MyCart = ({ navigation }: any) => {
         await AsyncStorage.setItem('shoppingItems', JSON.stringify(cart))
       }
 
-      console.log(array)
       await AsyncStorage.removeItem('cartItems')
     } catch (error) {
       return error
@@ -158,26 +160,24 @@ export const MyCart = ({ navigation }: any) => {
       customerEphemeralKeySecret: ephemeralKey,
       paymentIntentClientSecret: paymentIntent,
       allowsDelayedPaymentMethods: true,
-      defaultBillingDetails: {
-        name: 'ProjecT Store Customer',
-      },
+      customFlow: true,
+      defaultBillingDetails: informations,
       appearance: {
         colors: {
           primary: COLOURS.blue,
         },
       },
     })
+
+    const { paymentOption } = await presentPaymentSheet()
+
+    setPaymentMethod(paymentOption)
   }
 
   const openPaymentSheet = async () => {
     if (total > 0) {
-      await initializePaymentSheet()
-
-      const { error } = await presentPaymentSheet()
-
-      if (!error) {
-        checkOut()
-      }
+      await confirmPaymentSheetPayment()
+      checkOut()
     } else {
       navigation.goBack()
     }
@@ -278,9 +278,7 @@ export const MyCart = ({ navigation }: any) => {
                         >
                           R&#x24; {data.productPrice.toFixed(2)}
                         </Text>
-                        <Text>
-                          (~ R&#x24; {(data.productPrice + data.productPrice / 20).toFixed(2)})
-                        </Text>
+                        <Text>(~ R&#x24; {(data.productPrice / 10).toFixed(2)})</Text>
                       </View>
                     </View>
                     <View
@@ -357,20 +355,50 @@ export const MyCart = ({ navigation }: any) => {
         <View>
           <TopicSection>
             <TopicTitle>Local de entrega</TopicTitle>
-            <ModalComponent
-              deliveryInformations={setInformations}
-              openModalButton={
-                <InformationCard
-                  title={`${informations.country} - ${informations.city}/${informations.state}`}
-                  subtitle={`${informations.neighborhood} - ${informations.address}`}
-                  iconName="truck-delivery-outline"
-                />
-              }
+            <TouchableOpacity onPress={() => setOpenAdressModal(true)}>
+              <InformationCard
+                title={
+                  informations
+                    ? `${informations?.address?.country} - ${informations?.address?.city}/${informations?.address?.state}`
+                    : `Selecione o local de entrega`
+                }
+                subtitle={
+                  informations
+                    ? `${informations?.address?.line1} - ${informations?.address?.postalCode}`
+                    : `Clique para selecionar`
+                }
+                iconName="truck-delivery-outline"
+              />
+            </TouchableOpacity>
+            <AddressSheet
+              defaultValues={{
+                phone: '519',
+                address: {
+                  country: 'Brasil',
+                },
+              }}
+              allowedCountries={['BR']}
+              visible={openAdressModal}
+              sheetTitle="Local de entrega"
+              primaryButtonTitle="Usar este endereço"
+              onSubmit={(e) => {
+                setInformations(e)
+                setOpenAdressModal(false)
+              }}
+              onError={() => {
+                setOpenAdressModal(false)
+              }}
             />
           </TopicSection>
           <TopicSection>
             <TopicTitle>Método de pagamento</TopicTitle>
-            <InformationCard title="VISA GOLD" subtitle="**** 1234" iconText="VISA" />
+            <TouchableOpacity onPress={initializePaymentSheet}>
+              <InformationCard
+                title="Cartão de crédito"
+                subtitle={paymentMethod?.label}
+                iconText="CRD"
+              />
+            </TouchableOpacity>
           </TopicSection>
           <PriceInformation>
             <TopicTitle>Informações do pedido</TopicTitle>

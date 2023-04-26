@@ -59,7 +59,7 @@ export const Shopping = ({ navigation }: any) => {
           </TouchableOpacity>
           <HeaderText>Últimas compras</HeaderText>
         </Header>
-        <Title>Produtos</Title>
+        <Title>Compras</Title>
         <View style={{ paddingHorizontal: 16 }}>
           {shopping
             ? shopping.map((data, index) => (
