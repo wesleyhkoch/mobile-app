@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react'
 
-import { StatusBar, ScrollView, TouchableOpacity } from 'react-native';
+import { StatusBar, ScrollView, TouchableOpacity } from 'react-native'
 
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 
-import { COLOURS, Items } from '../../database/Database';
+import { COLOURS, Items } from '../../database/Database'
 
-import { ProductCard } from '../../components';
+import { ProductCard } from '../../components'
 
 import {
   Container,
@@ -17,30 +17,30 @@ import {
   ProductSectionTitle,
   ProductSectionTotal,
   ProductPreview,
-} from './styles';
+} from './styles'
 
 export const Products = ({ navigation }: any) => {
-  const [products, setProducts] = useState<any>([]);
-
-  useEffect(() => {
-    const unsubsribe = navigation.addListener('focus', () => {
-      getDataFromDB();
-    });
-
-    return unsubsribe;
-  }, [navigation]);
+  const [products, setProducts] = useState<any>([])
 
   const getDataFromDB = async () => {
-    const productList = [];
+    const productList = []
 
     for (let i = 0; i < Items.length; i++) {
       if (Items[i].category === 'product') {
-        productList.push(Items[i]);
+        productList.push(Items[i])
       }
     }
 
-    setProducts(productList);
-  };
+    setProducts(productList)
+  }
+
+  useEffect(() => {
+    const unsubsribe = navigation.addListener('focus', () => {
+      getDataFromDB()
+    })
+
+    return unsubsribe
+  }, [navigation])
 
   return (
     <Container>
@@ -82,11 +82,11 @@ export const Products = ({ navigation }: any) => {
           </ProductSectionHeader>
           <ProductPreview>
             {products.map((data: any) => {
-              return <ProductCard data={data} navigation={navigation} key={data.id} />;
+              return <ProductCard data={data} navigation={navigation} key={data.id} />
             })}
           </ProductPreview>
         </ProductSection>
       </ScrollView>
     </Container>
-  );
-};
+  )
+}

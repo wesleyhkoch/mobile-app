@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react'
 
-import { Button } from '../../components';
+import { Button } from '../../components'
 
 import {
   View,
@@ -13,14 +13,14 @@ import {
   Dimensions,
   Animated,
   ToastAndroid,
-} from 'react-native';
+} from 'react-native'
 
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
-import { COLOURS, Items } from '../../database/Database';
+import { COLOURS, Items } from '../../database/Database'
 
-import Entypo from 'react-native-vector-icons/Entypo';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import Entypo from 'react-native-vector-icons/Entypo'
+import Ionicons from 'react-native-vector-icons/Ionicons'
 import {
   ButtonBack,
   Container,
@@ -34,62 +34,62 @@ import {
   ProductNameTitle,
   ProductPriceSection,
   ProductPriceTitle,
-} from './styles';
+} from './styles'
 
 export const ProductInfo = ({ route, navigation }: any) => {
-  const { productID } = route.params;
+  const { productID } = route.params
 
-  const [product, setProduct] = useState<any>([]);
+  const [product, setProduct] = useState<any>([])
 
-  const width = Dimensions.get('window').width;
+  const width = Dimensions.get('window').width
 
-  const scrollX = new Animated.Value(0);
+  const scrollX = new Animated.Value(0)
 
-  let position = Animated.divide(scrollX, width);
+  let position = Animated.divide(scrollX, width)
 
   useEffect(() => {
     const unsubsribe = navigation.addListener('focus', () => {
-      getDataFromDB();
-    });
+      getDataFromDB()
+    })
 
-    return unsubsribe;
-  }, [navigation]);
+    return unsubsribe
+  }, [navigation])
 
   const getDataFromDB = async () => {
     for (let i = 0; i < Items.length; i++) {
       if (Items[i].id == productID) {
-        await setProduct(Items[i]);
-        return;
+        await setProduct(Items[i])
+        return
       }
     }
-  };
+  }
 
   const addToCart = async (id: number) => {
-    let itemArray = (await AsyncStorage.getItem('cartItems')) as any;
-    itemArray = JSON.parse(itemArray);
+    let itemArray = (await AsyncStorage.getItem('cartItems')) as any
+    itemArray = JSON.parse(itemArray)
     if (itemArray !== null) {
-      let array = itemArray;
-      array.push(id);
+      let array = itemArray
+      array.push(id)
 
       try {
-        await AsyncStorage.setItem('cartItems', JSON.stringify(array));
-        ToastAndroid.show('Item adicionado ao carrinho', ToastAndroid.SHORT);
-        navigation.navigate('Home');
+        await AsyncStorage.setItem('cartItems', JSON.stringify(array))
+        ToastAndroid.show('Item adicionado ao carrinho', ToastAndroid.SHORT)
+        navigation.navigate('Home')
       } catch (error) {
-        return error;
+        return error
       }
     } else {
-      let array = [];
-      array.push(id);
+      let array = []
+      array.push(id)
       try {
-        await AsyncStorage.setItem('cartItems', JSON.stringify(array));
-        ToastAndroid.show('Item adicionado ao carrinho', ToastAndroid.SHORT);
-        navigation.navigate('Home');
+        await AsyncStorage.setItem('cartItems', JSON.stringify(array))
+        ToastAndroid.show('Item adicionado ao carrinho', ToastAndroid.SHORT)
+        navigation.navigate('Home')
       } catch (error) {
-        return error;
+        return error
       }
     }
-  };
+  }
 
   const renderProduct = ({ item, index }: any) => {
     return (
@@ -110,8 +110,8 @@ export const ProductInfo = ({ route, navigation }: any) => {
           }}
         />
       </View>
-    );
-  };
+    )
+  }
 
   return (
     <Container>
@@ -152,7 +152,7 @@ export const ProductInfo = ({ route, navigation }: any) => {
                     inputRange: [index - 1, index, index + 1],
                     outputRange: [0.2, 1, 0.2],
                     extrapolate: 'clamp',
-                  });
+                  })
                   return (
                     <Animated.View
                       key={index}
@@ -166,7 +166,7 @@ export const ProductInfo = ({ route, navigation }: any) => {
                         borderRadius: 100,
                       }}
                     ></Animated.View>
-                  );
+                  )
                 })
               : null}
           </ImagesList>
@@ -214,5 +214,5 @@ export const ProductInfo = ({ route, navigation }: any) => {
         <Button title="Não está disponível" onPress={() => null} />
       )}
     </Container>
-  );
-};
+  )
+}

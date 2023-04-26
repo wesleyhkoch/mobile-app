@@ -1,16 +1,9 @@
-import React from "react"
-import { Text, View } from "react-native"
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
-import { COLOURS } from "../../database/Database"
+import React from 'react'
+import { Text, View } from 'react-native'
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
+import { COLOURS } from '../../database/Database'
 
-import {
-  Container,
-  ContentSection,
-  IconSection,
-  SubTitle,
-  TextIcon,
-  Title,
-} from "./styles"
+import { Container, ContentSection, IconSection, SubTitle, TextIcon, Title } from './styles'
 
 interface CardProps {
   iconText?: string
@@ -19,12 +12,7 @@ interface CardProps {
   subtitle?: string
 }
 
-export const InformationCard = ({
-  iconText = "OFF",
-  iconName,
-  title,
-  subtitle,
-}: CardProps) => {
+export const InformationCard = ({ iconText = 'OFF', iconName, title, subtitle }: CardProps) => {
   return (
     <Container>
       <ContentSection>
@@ -46,10 +34,7 @@ export const InformationCard = ({
           <SubTitle>{subtitle}</SubTitle>
         </View>
       </ContentSection>
-      <MaterialCommunityIcons
-        name='chevron-right'
-        style={{ fontSize: 22, color: COLOURS.black }}
-      />
+      <MaterialCommunityIcons name="chevron-right" style={{ fontSize: 22, color: COLOURS.black }} />
     </Container>
   )
 }

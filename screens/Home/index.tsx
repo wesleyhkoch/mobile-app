@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react'
 
-import { StatusBar, ScrollView, TouchableOpacity } from 'react-native';
+import { StatusBar, ScrollView, TouchableOpacity } from 'react-native'
 
-import Entypo from 'react-native-vector-icons/Entypo';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import Entypo from 'react-native-vector-icons/Entypo'
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 
-import { COLOURS, Items } from '../../database/Database';
+import { COLOURS, Items } from '../../database/Database'
 
-import { ProductCard } from '../../components';
+import { ProductCard } from '../../components'
 
 import {
   Logo,
@@ -22,44 +22,44 @@ import {
   ProductSectionTotal,
   ProductSectionTitleSeeAll,
   ProductPreview,
-} from './styles';
+} from './styles'
 
-import { Product } from '../../types/index';
+import { Product } from '../../types/index'
 
 export const Home = ({ navigation }: any) => {
-  const [products, setProducts] = useState<Product[]>([]);
-  const [accessories, setAccessories] = useState<Product[]>([]);
+  const [products, setProducts] = useState<Product[]>([])
+  const [accessories, setAccessories] = useState<Product[]>([])
 
   useEffect(() => {
     const unsubsribe = navigation.addListener('focus', () => {
-      getDataFromDB();
-    });
+      getDataFromDB()
+    })
 
-    return unsubsribe;
-  }, [navigation]);
+    return unsubsribe
+  }, [navigation])
 
   const getDataFromDB = async () => {
-    const productList: any[] = [];
-    const accessoryList: any[] = [];
+    const productList: any[] = []
+    const accessoryList: any[] = []
 
     for (let i = 0; i < Items.length; i++) {
       if (Items[i].category === 'product') {
-        productList.push(Items[i]);
+        productList.push(Items[i])
       } else if (Items[i].category === 'accessory') {
-        accessoryList.push(Items[i]);
+        accessoryList.push(Items[i])
       }
     }
 
-    setProducts(productList);
-    setAccessories(accessoryList);
-  };
+    setProducts(productList)
+    setAccessories(accessoryList)
+  }
 
   return (
     <Container>
       <StatusBar backgroundColor={COLOURS.white} barStyle="dark-content" />
       <ScrollView showsVerticalScrollIndicator={false}>
         <Header>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate('Shopping')}>
             <Entypo
               name="shopping-bag"
               style={{
@@ -111,7 +111,7 @@ export const Home = ({ navigation }: any) => {
           </ProductSectionHeader>
           <ProductPreview>
             {products.map((data: any) => {
-              return <ProductCard data={data} navigation={navigation} key={data.id} />;
+              return <ProductCard data={data} navigation={navigation} key={data.id} />
             })}
           </ProductPreview>
         </ProductSection>
@@ -127,11 +127,11 @@ export const Home = ({ navigation }: any) => {
           </ProductSectionHeader>
           <ProductPreview>
             {accessories.map((data: any) => {
-              return <ProductCard data={data} navigation={navigation} key={data.id} />;
+              return <ProductCard data={data} navigation={navigation} key={data.id} />
             })}
           </ProductPreview>
         </ProductSection>
       </ScrollView>
     </Container>
-  );
-};
+  )
+}

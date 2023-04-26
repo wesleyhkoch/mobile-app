@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'
 import {
   Modal,
   Pressable,
@@ -6,9 +6,9 @@ import {
   View,
   ScrollView,
   ToastAndroid,
-} from 'react-native';
+} from 'react-native'
 
-import { Button } from '../Button';
+import { Button } from '../Button'
 
 import {
   ModalContainer,
@@ -16,25 +16,25 @@ import {
   ModalTouchableOpacity,
   ModalTextInput,
   FormView,
-} from './styles';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+} from './styles'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 interface DeliveryInformationsProps {
-  country: string;
-  state: string;
-  city: string;
-  neighborhood: string;
-  address: string;
-  complement: string;
+  country: string
+  state: string
+  city: string
+  neighborhood: string
+  address: string
+  complement: string
 }
 
 interface ModalProps {
-  openModalButton: JSX.Element;
-  deliveryInformations: (e: DeliveryInformationsProps) => void;
+  openModalButton: JSX.Element
+  deliveryInformations: (e: DeliveryInformationsProps) => void
 }
 
 export const ModalComponent = ({ openModalButton, deliveryInformations }: ModalProps) => {
-  const [modalVisible, setModalVisible] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false)
   const [informations, setInformations] = useState<DeliveryInformationsProps>({
     country: '',
     state: '',
@@ -42,7 +42,7 @@ export const ModalComponent = ({ openModalButton, deliveryInformations }: ModalP
     neighborhood: '',
     address: '',
     complement: '',
-  });
+  })
 
   return (
     <View>
@@ -90,8 +90,8 @@ export const ModalComponent = ({ openModalButton, deliveryInformations }: ModalP
                       <Button
                         title="Mudar endereço"
                         onPress={() => {
-                          deliveryInformations(informations);
-                          setModalVisible(false);
+                          deliveryInformations(informations)
+                          setModalVisible(false)
                         }}
                       />
                     </FormView>
@@ -104,5 +104,5 @@ export const ModalComponent = ({ openModalButton, deliveryInformations }: ModalP
       </Modal>
       <Pressable onPress={() => setModalVisible(true)}>{openModalButton}</Pressable>
     </View>
-  );
-};
+  )
+}

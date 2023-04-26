@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react'
 
-import { View, Text, ScrollView, TouchableOpacity, Image, ToastAndroid, Alert } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, Image, ToastAndroid, Alert } from 'react-native'
 
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 
-import { useStripe } from '@stripe/stripe-react-native';
+import { useStripe } from '@stripe/stripe-react-native'
 
-import { COLOURS, Items } from '../../database/Database';
+import { COLOURS, Items } from '../../database/Database'
 
-import { Button, InformationCard, ModalComponent } from '../../components';
+import { Button, InformationCard, ModalComponent } from '../../components'
 
 import {
   Container,
@@ -25,15 +25,15 @@ import {
   TotalSection,
   TotalTitle,
   TotalValue,
-} from './styles';
+} from './styles'
 
-import { Product } from '../../types/index';
+import { Product } from '../../types/index'
 
 export const MyCart = ({ navigation }: any) => {
-  const { initPaymentSheet, presentPaymentSheet } = useStripe();
+  const { initPaymentSheet, presentPaymentSheet } = useStripe()
 
-  const [cart, setCart] = useState<Product[]>([]);
-  const [total, setTotal] = useState<number>(0);
+  const [cart, setCart] = useState<Product[]>([])
+  const [total, setTotal] = useState<number>(0)
   const [informations, setInformations] = useState({
     country: 'Brasil',
     state: 'RS',
@@ -41,80 +41,92 @@ export const MyCart = ({ navigation }: any) => {
     neighborhood: 'Humaitá',
     address: 'Av. Padre Leopoldo Brentano',
     complement: '110 - Portão 2',
-  });
+  })
 
   const getDataFromDB = async () => {
-    let items = (await AsyncStorage.getItem('cartItems')) as any;
-    items = JSON.parse(items);
-    let productData: any = [];
+    let items = (await AsyncStorage.getItem('cartItems')) as any
+    items = JSON.parse(items)
+    let productData: any = []
 
     if (items !== null) {
       Items.forEach((data: any) => {
         if (items.includes(data.id)) {
-          productData.push(data);
-          return;
+          productData.push(data)
+          return
         }
-      });
+      })
 
-      setCart(productData);
-      getTotal(productData);
+      setCart(productData)
+      getTotal(productData)
     } else {
-      setCart([]);
-      getTotal([]);
+      setCart([])
+      getTotal([])
     }
-  };
+  }
 
   const getTotal = (productData: Product[]) => {
-    let total = 0;
+    let total = 0
     for (let i = 0; i < productData.length; i++) {
-      let productPrice = productData[i].productPrice * productData[i].quantity;
-      total = total + productPrice;
+      let productPrice = productData[i].productPrice * productData[i].quantity
+      total = total + productPrice
     }
 
-    setTotal(total);
-  };
+    setTotal(total)
+  }
 
   const updateCartItemQuantity = (productData: Product, newQuantity: number) => {
-    const cartIndex = cart.findIndex((product: Product) => product.id === productData.id);
-    const updatedCart = [...cart];
+    const cartIndex = cart.findIndex((product: Product) => product.id === productData.id)
+    const updatedCart = [...cart]
 
     if (cartIndex !== -1 && newQuantity > 0) {
-      updatedCart[cartIndex] = { ...updatedCart[cartIndex], quantity: newQuantity };
+      updatedCart[cartIndex] = { ...updatedCart[cartIndex], quantity: newQuantity }
     }
 
-    setCart(updatedCart);
-    getTotal(updatedCart);
-  };
+    setCart(updatedCart)
+    getTotal(updatedCart)
+  }
 
   const removeItemFromCart = async (id: number) => {
-    let itemArray = (await AsyncStorage.getItem('cartItems')) as any;
-    itemArray = JSON.parse(itemArray);
+    let itemArray = (await AsyncStorage.getItem('cartItems')) as any
+    itemArray = JSON.parse(itemArray)
     if (itemArray !== null) {
-      let array = itemArray;
+      let array = itemArray
       for (let i = 0; i < array.length; i++) {
         if (array[i] == id) {
-          array.splice(i, 1);
+          array.splice(i, 1)
         }
 
-        await AsyncStorage.setItem('cartItems', JSON.stringify(array));
-        getDataFromDB();
+        await AsyncStorage.setItem('cartItems', JSON.stringify(array))
+        getDataFromDB()
       }
     }
-  };
+  }
 
   const checkOut = async () => {
     try {
-      await AsyncStorage.removeItem('cartItems');
+      let items: any = await AsyncStorage.getItem('shoppingItems')
+      items = JSON.parse(items)
+
+      let array = []
+
+      if (items !== null) {
+        array.push(items)
+        array.push(cart)
+        await AsyncStorage.setItem('shoppingItems', JSON.stringify(array.flat()))
+      } else {
+        await AsyncStorage.setItem('shoppingItems', JSON.stringify(cart))
+      }
+
+      console.log(array)
+      await AsyncStorage.removeItem('cartItems')
     } catch (error) {
-      return error;
+      return error
     }
 
-    if (total !== 0) {
-      ToastAndroid.show('Seus itens chegarão em breve!', ToastAndroid.SHORT);
-    }
+    ToastAndroid.show('Seus itens chegarão em breve!', ToastAndroid.SHORT)
 
-    navigation.navigate('Home');
-  };
+    navigation.navigate('Home')
+  }
 
   const fetchPaymentSheetParams = async () => {
     const response = await fetch(`http://10.0.0.164:4242/payment-sheet`, {
@@ -126,19 +138,19 @@ export const MyCart = ({ navigation }: any) => {
       body: JSON.stringify({
         price: Number((total + total / 10).toFixed(2).toString().split('.').join('')),
       }),
-    });
+    })
 
-    const { paymentIntent, ephemeralKey, customer } = await response.json();
+    const { paymentIntent, ephemeralKey, customer } = await response.json()
 
     return {
       paymentIntent,
       ephemeralKey,
       customer,
-    };
-  };
+    }
+  }
 
   const initializePaymentSheet = async () => {
-    const { paymentIntent, ephemeralKey, customer } = await fetchPaymentSheetParams();
+    const { paymentIntent, ephemeralKey, customer } = await fetchPaymentSheetParams()
 
     await initPaymentSheet({
       merchantDisplayName: 'ProjecT Store',
@@ -154,32 +166,30 @@ export const MyCart = ({ navigation }: any) => {
           primary: COLOURS.blue,
         },
       },
-    });
-  };
+    })
+  }
 
   const openPaymentSheet = async () => {
-    await initializePaymentSheet();
+    if (total > 0) {
+      await initializePaymentSheet()
 
-    const { error } = await presentPaymentSheet();
+      const { error } = await presentPaymentSheet()
 
-    if (error) {
-      Alert.alert(`Error code: ${error.code}`, error.message);
+      if (!error) {
+        checkOut()
+      }
     } else {
-      checkOut();
+      navigation.goBack()
     }
-  };
-
-  useEffect(() => {
-    initializePaymentSheet();
-  }, []);
+  }
 
   useEffect(() => {
     const unsubsribe = navigation.addListener('focus', () => {
-      getDataFromDB();
-    });
+      getDataFromDB()
+    })
 
-    return unsubsribe;
-  }, [navigation]);
+    return unsubsribe
+  }, [navigation])
 
   return (
     <Container>
@@ -206,7 +216,7 @@ export const MyCart = ({ navigation }: any) => {
                 <TouchableOpacity
                   key={index}
                   onPress={() => {
-                    navigation.navigate('ProductInfo', { productID: data.id });
+                    navigation.navigate('ProductInfo', { productID: data.id })
                   }}
                   style={{
                     width: '100%',
@@ -384,5 +394,5 @@ export const MyCart = ({ navigation }: any) => {
         onPress={openPaymentSheet}
       />
     </Container>
-  );
-};
+  )
+}

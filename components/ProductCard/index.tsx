@@ -1,5 +1,5 @@
-import React from 'react';
-import { Text } from 'react-native';
+import React from 'react'
+import { Text } from 'react-native'
 
 import {
   AvailableContainer,
@@ -11,17 +11,17 @@ import {
   OffText,
   ProductImage,
   ProductName,
-} from './styles';
+} from './styles'
 
-import { COLOURS } from '../../database/Database';
+import { COLOURS } from '../../database/Database'
 
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import FontAwesome from 'react-native-vector-icons/FontAwesome'
 
 export const ProductCard = ({ data, navigation }: any) => {
   return (
     <Container
       onPress={() => {
-        navigation.navigate('ProductInfo', { productID: data.id });
+        navigation.navigate('ProductInfo', { productID: data.id })
       }}
     >
       <ImageContainer>
@@ -60,5 +60,5 @@ export const ProductCard = ({ data, navigation }: any) => {
       )}
       <Text>R&#x24; {data.productPrice.toFixed(2)}</Text>
     </Container>
-  );
-};
+  )
+}

@@ -1,6 +1,6 @@
-import React from "react"
+import React from 'react'
 
-import { Container, ButtonContainer, ButtonText } from "./styles"
+import { Container, ButtonContainer, ButtonText } from './styles'
 
 interface ButtonProps {
   title: string
