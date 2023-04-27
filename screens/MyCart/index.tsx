@@ -395,7 +395,9 @@ export const MyCart = ({ navigation }: any) => {
             <TouchableOpacity onPress={initializePaymentSheet}>
               <InformationCard
                 title="Cartão de crédito"
-                subtitle={paymentMethod?.label}
+                subtitle={
+                  paymentMethod?.label ? paymentMethod.label : 'Cadastre um cartão de crédito'
+                }
                 iconText="CRD"
               />
             </TouchableOpacity>
