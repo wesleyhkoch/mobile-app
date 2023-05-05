@@ -1,5 +1,5 @@
-import styled from 'styled-components/native';
-import { COLOURS } from '../../database/Database';
+import styled from 'styled-components/native'
+import { COLOURS } from '../../database/Database'
 
 export const ModalContainer = styled.View`
   flex: 1;
@@ -8,7 +8,7 @@ export const ModalContainer = styled.View`
   background: ${COLOURS.backgroundLayer};
   width: 100%;
   height: 100%;
-`;
+`
 
 export const ModalTouchableOpacity = styled.TouchableOpacity`
   flex: 1;
@@ -16,7 +16,7 @@ export const ModalTouchableOpacity = styled.TouchableOpacity`
   align-items: center;
   width: 100%;
   height: 100%;
-`;
+`
 
 export const ModalView = styled.View`
   margin: 20px;
@@ -24,7 +24,7 @@ export const ModalView = styled.View`
   border-radius: 20px;
   padding: 35px;
   align-items: center;
-`;
+`
 
 export const ModalTextInput = styled.TextInput`
   width: 100%;
@@ -32,10 +32,10 @@ export const ModalTextInput = styled.TextInput`
   margin: 10px 0;
   border-width: 0.5px;
   padding: 10px;
-`;
+`
 
 export const FormView = styled.View`
   display: flex;
   width: 100%;
   height: 450px;
-`;
+`

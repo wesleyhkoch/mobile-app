@@ -1,5 +1,5 @@
-import styled from "styled-components/native"
-import { COLOURS } from "../../database/Database"
+import styled from 'styled-components/native'
+import { COLOURS } from '../../database/Database'
 
 export const Container = styled.View`
   flex-direction: row;
